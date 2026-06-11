@@ -3,686 +3,1086 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Apê - Life Organizer</title>
+<title>apê.</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* MANTENDO EXATAMENTE O SEU DESIGN ORIGINAL */
-*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 :root{
-  --cream:#F5F0E8; --cream-dark:#EDE7D9; --cream-darker:#E4DDD0;
-  --black:#0F0F0D; --black2:#1A1A17; --yellow:#F5C842;
-  --yellow-dark:#E6B830; --yellow-soft:rgba(245,200,66,0.15);
-  --yellow-softer:rgba(245,200,66,0.08); --text:#0F0F0D;
-  --muted:#8C8880; --muted2:#B8B4AE; --border:rgba(15,15,13,0.08);
-  --border2:rgba(15,15,13,0.12); --white:rgba(255,255,255,0.7);
+  --cream:#F5F0E8;--cream-dark:#EDE7D9;--cream-darker:#E0D9CC;
+  --black:#0F0F0D;--black2:#1A1A17;
+  --yellow:#F5C842;--yellow-dark:#D4A017;--yellow-soft:rgba(245,200,66,0.12);
+  --green:#4CAF7D;--green-soft:rgba(76,175,125,0.12);
+  --red:#E05C5C;--red-soft:rgba(224,92,92,0.12);
+  --text:#0F0F0D;--muted:#8C8880;--muted2:#B8B4AE;
+  --border:rgba(15,15,13,0.08);--border2:rgba(15,15,13,0.14);
   --r:18px;--rs:12px;--rxs:8px;
 }
-html,body{height:100%;background:var(--cream);overscroll-behavior:none}
-body{font-family:'Poppins',sans-serif;color:var(--text);display:flex;justify-content:center;align-items:flex-start;overflow:hidden}
-.shell{width:100%;max-width:390px;height:100vh;position:relative;overflow:hidden;background:var(--cream)}
+html,body{height:100%;background:#1A1A17;overflow:hidden}
+body{font-family:'Poppins',sans-serif;color:var(--text);display:flex;justify-content:center}
+.shell{width:100%;max-width:390px;height:100vh;position:relative;overflow:hidden;background:var(--cream);display:flex;flex-direction:column}
 
-/* ONBOARDING */
-#ob{position:absolute;inset:0;z-index:300;display:flex;flex-direction:column;background:var(--cream);overflow:hidden}
-.splash{position:absolute;inset:0;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;transition:opacity 0.5s ease}
-.splash-logo{font-family:'Outfit',sans-serif;font-size:3rem;font-weight:800;color:var(--cream);letter-spacing:-1px}
+/* ======= SPLASH ======= */
+#splash{position:absolute;inset:0;z-index:500;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease}
+.splash-logo{font-family:'Outfit',sans-serif;font-size:3.2rem;font-weight:800;color:var(--cream);letter-spacing:-1px}
 .splash-logo span{color:var(--yellow)}
-.splash-tagline{font-size:0.78rem;color:rgba(245,240,232,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-top:8px;font-weight:400}
-.splash-dot{width:5px;height:5px;border-radius:50%;background:var(--yellow);margin-top:40px;animation:pulse 1.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+.splash-tag{font-size:0.72rem;color:rgba(245,240,232,0.35);letter-spacing:0.18em;text-transform:uppercase;margin-top:10px}
+.splash-dot{width:5px;height:5px;border-radius:50%;background:var(--yellow);margin-top:44px;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.3)}}
 
-.ob-steps{flex:1;display:flex;flex-direction:column;position:relative;z-index:20;overflow:hidden}
-.step{position:absolute;inset:0;display:flex;flex-direction:column;padding:0 24px;overflow-y:auto;opacity:0;pointer-events:none;transform:translateX(32px);transition:all 0.38s cubic-bezier(0.4,0,0.2,1)}
-.step.active{opacity:1;pointer-events:all;transform:translateX(0)}
-.step.out{opacity:0;transform:translateX(-32px)}
-.step-top{padding-top:40px;margin-bottom:24px;flex-shrink:0}
-.step-num{font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin-bottom:12px}
-.step-title{font-family:'Outfit',sans-serif;font-size:1.9rem;font-weight:700;line-height:1.15;letter-spacing:-0.5px;color:var(--black)}
+/* ======= ONBOARDING ======= */
+#ob{position:absolute;inset:0;z-index:400;display:none;flex-direction:column;background:var(--cream)}
+#ob.show{display:flex}
+.ob-body{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;position:relative}
+.ob-body::-webkit-scrollbar{display:none}
+.step{display:none;padding:40px 24px 24px;flex-direction:column;gap:0;min-height:100%}
+.step.active{display:flex}
+.step-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin-bottom:12px}
+.step-title{font-family:'Outfit',sans-serif;font-size:1.85rem;font-weight:700;line-height:1.15;letter-spacing:-0.5px;color:var(--black);margin-bottom:10px}
 .step-title em{font-style:normal;color:var(--yellow-dark)}
-.step-desc{font-size:0.85rem;color:var(--muted);margin-top:8px;line-height:1.6}
-.illo-wrap{height:160px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
-.illo-box{width:160px;height:160px;border-radius:32px;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;box-shadow:0 20px 60px rgba(15,15,13,0.15)}
-.illo-pill{position:absolute;bottom:-12px;background:var(--yellow);color:var(--black);font-size:0.68rem;font-weight:700;padding:5px 14px;border-radius:99px;white-space:nowrap;box-shadow:0 4px 12px rgba(245,200,66,0.35)}
-
-.field-group{display:flex;flex-direction:column;gap:14px;padding-bottom:24px}
-.field-label{font-size:0.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
-.field-input{width:100%;background:rgba(255,255,255,0.6);border:1.5px solid var(--border2);border-radius:var(--rs);padding:14px 16px;font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:500;outline:none;transition:all 0.2s}
-.field-input:focus{border-color:var(--yellow-dark);background:white;box-shadow:0 0 0 3px rgba(245,200,66,0.15)}
+.step-desc{font-size:0.85rem;color:var(--muted);line-height:1.6;font-weight:400;margin-bottom:28px}
+.illo-box{width:150px;height:150px;border-radius:28px;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:3.8rem;position:relative;box-shadow:0 16px 48px rgba(15,15,13,0.18);margin:0 auto 28px}
+.illo-pill{position:absolute;bottom:-12px;background:var(--yellow);color:var(--black);font-size:0.66rem;font-weight:700;padding:5px 14px;border-radius:99px;white-space:nowrap;box-shadow:0 4px 12px rgba(245,200,66,0.3)}
+.field-group{display:flex;flex-direction:column;gap:16px;margin-bottom:8px}
+.field-wrap{}
+.field-label{font-size:0.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:7px;display:block}
+.field-input{width:100%;background:rgba(255,255,255,0.7);border:1.5px solid var(--border2);border-radius:var(--rs);padding:14px 16px;font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:500;color:var(--text);outline:none;transition:all 0.2s;-webkit-appearance:none;appearance:none}
+.field-input:focus{border-color:var(--yellow-dark);background:#fff;box-shadow:0 0 0 3px rgba(245,200,66,0.15)}
+.field-input::placeholder{color:var(--muted2);font-weight:400}
 .prefix-wrap{position:relative}
-.prefix{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:0.95rem;font-weight:500;color:var(--muted)}
-.prefix-wrap .field-input{padding-left:38px}
-
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border2);font-size:0.82rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.18s}
+.prefix{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:0.92rem;font-weight:500;color:var(--muted);pointer-events:none}
+.prefix-wrap .field-input{padding-left:36px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border2);background:transparent;font-family:'Poppins',sans-serif;font-size:0.8rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.18s;-webkit-appearance:none}
 .chip.on{background:var(--black);border-color:var(--black);color:var(--yellow)}
-
-.ob-bottom{padding:16px 24px;padding-bottom:max(32px, env(safe-area-inset-bottom));background:var(--cream);border-top:1px solid var(--border);position:relative;z-index:25}
-.progress-dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
-.pdot{width:6px;height:6px;border-radius:99px;background:var(--border2);transition:0.3s}
+.ob-bottom{flex-shrink:0;padding:14px 24px;padding-bottom:max(28px,env(safe-area-inset-bottom,28px));background:var(--cream);border-top:1px solid var(--border);z-index:10}
+.dots-row{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+.pdot{width:6px;height:6px;border-radius:99px;background:var(--border2);transition:all 0.3s}
 .pdot.on{width:22px;background:var(--black)}
-.btn-primary{width:100%;padding:16px;background:var(--black);color:var(--cream);border:none;border-radius:var(--r);font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-primary:active{transform:scale(0.98)}
-.skip-link{text-align:center;margin-top:14px;font-size:0.78rem;color:var(--muted);cursor:pointer}
+.btn{width:100%;padding:15px;border-radius:var(--r);border:none;font-family:'Poppins',sans-serif;font-size:0.92rem;font-weight:600;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-dark{background:var(--black);color:var(--cream)}
+.btn:active{transform:scale(0.98);opacity:0.85}
+.skip-row{text-align:center;margin-top:12px;font-size:0.78rem;color:var(--muted);cursor:pointer}
 
-/* APP LAYOUT */
-#app{position:absolute;inset:0;display:none;flex-direction:column;background:var(--cream)}
+/* ======= APP ======= */
+#app{display:none;flex-direction:column;height:100vh}
 #app.show{display:flex}
-.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:0.72rem;font-weight:600}
-.topbar{padding:4px 20px 14px;display:flex;align-items:center;justify-content:space-between}
+.statusbar{height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:0.7rem;font-weight:600;color:var(--text)}
+.sb-r{display:flex;align-items:center;gap:5px}
+.topbar{padding:2px 20px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .app-logo{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800;letter-spacing:-0.5px}
 .app-logo span{color:var(--yellow-dark)}
-.greeting-sub{font-size:0.72rem;color:var(--muted)}
-.icon-btn{width:38px;height:38px;border-radius:50%;background:var(--black);border:none;display:flex;align-items:center;justify-content:center;position:relative}
-.notif-badge{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--yellow);border:1.5px solid var(--cream)}
-.avatar-btn{width:38px;height:38px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;font-family:'Poppins'}
-
-.tabs{display:flex;padding:0 20px;gap:6px;margin-bottom:4px;overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{padding:7px 16px;border-radius:99px;font-size:0.75rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--muted);white-space:nowrap}
+.greet-sub{font-size:0.7rem;color:var(--muted);margin-top:1px;font-weight:400}
+.topbar-r{display:flex;align-items:center;gap:8px}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:var(--black);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:opacity 0.15s}
+.icon-btn:active{opacity:0.7}
+.icon-btn svg{color:var(--cream)}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--yellow);border:1.5px solid var(--cream)}
+.av-btn{width:36px;height:36px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:var(--black);cursor:pointer;border:none;font-family:'Poppins',sans-serif}
+.tabs-row{display:flex;padding:0 20px;gap:6px;flex-shrink:0;overflow-x:auto;scrollbar-width:none;margin-bottom:4px}
+.tabs-row::-webkit-scrollbar{display:none}
+.tab{padding:7px 14px;border-radius:99px;font-size:0.72rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;font-family:'Poppins',sans-serif;color:var(--muted);white-space:nowrap;transition:all 0.18s;flex-shrink:0}
 .tab.on{background:var(--black);color:var(--yellow);border-color:var(--black)}
-
-.content{flex:1;overflow-y:auto;padding:16px 20px 100px;scrollbar-width:none}
+.content{flex:1;overflow-y:auto;padding:14px 18px 90px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .content::-webkit-scrollbar{display:none}
 .panel{display:none}
 .panel.on{display:block}
 
-/* CARDS & UI */
-.hero-card{background:var(--black);border-radius:24px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
-.hero-greeting{font-size:0.75rem;color:rgba(245,240,232,0.5);margin-bottom:4px}
-.hero-name{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:var(--cream);margin-bottom:20px}
+/* cards */
+.hero-card{background:var(--black);border-radius:22px;padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(245,200,66,0.18) 0%,transparent 70%);pointer-events:none}
+.hero-greet{font-size:0.72rem;color:rgba(245,240,232,0.45);margin-bottom:3px;font-weight:400}
+.hero-name{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cream);letter-spacing:-0.5px;margin-bottom:18px}
 .hero-name span{color:var(--yellow)}
-.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.hstat{background:rgba(255,255,255,0.06);border-radius:var(--rs);padding:14px}
-.hstat-label{font-size:0.65rem;color:rgba(245,240,232,0.4);text-transform:uppercase;font-weight:600;margin-bottom:4px}
-.hstat-val{font-size:1.3rem;font-weight:700;color:var(--cream)}
-.hstat-val.yellow{color:var(--yellow)}
-.hstat-sub{font-size:0.65rem;color:rgba(245,240,232,0.35);margin-top:2px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hstat{background:rgba(255,255,255,0.06);border-radius:10px;padding:12px}
+.hstat-lbl{font-size:0.6rem;color:rgba(245,240,232,0.38);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:3px}
+.hstat-val{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;color:var(--cream);letter-spacing:-0.5px;line-height:1}
+.hstat-val.y{color:var(--yellow)}
+.hstat-sub{font-size:0.6rem;color:rgba(245,240,232,0.3);margin-top:2px}
+.card{background:rgba(255,255,255,0.6);border:1.5px solid var(--border);border-radius:var(--r);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.card-pad{padding:18px 20px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:18px 0 10px;padding:0 2px}
+.sec-title{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted)}
+.sec-action{font-size:0.75rem;font-weight:600;color:var(--black);cursor:pointer;display:flex;align-items:center;gap:4px}
 
-.prog-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
-.prog-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
-.prog-title{font-size:0.92rem;font-weight:600}
-.prog-pct{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:var(--yellow-dark)}
-.prog-bg{height:6px;background:var(--cream-darker);border-radius:99px;margin-bottom:10px}
+/* prog */
+.prog-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.prog-title{font-size:0.9rem;font-weight:600;letter-spacing:-0.2px}
+.prog-sub-txt{font-size:0.7rem;color:var(--muted);margin-top:2px;font-weight:400}
+.prog-pct{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:700;color:var(--yellow-dark);letter-spacing:-1px;line-height:1}
+.prog-bg{height:5px;background:var(--cream-darker);border-radius:99px;overflow:hidden;margin-bottom:8px}
 .prog-fill{height:100%;background:var(--black);border-radius:99px;transition:width 0.8s ease}
+.prog-meta{display:flex;justify-content:space-between;font-size:0.66rem;color:var(--muted);font-weight:500}
 
-.ai-card{background:var(--yellow-soft);border:1.5px solid rgba(245,200,66,0.3);border-radius:var(--r);padding:16px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
-.ai-icon{font-size:1.5rem}
-.ai-text{font-size:0.82rem;line-height:1.5;color:var(--black);font-weight:500}
+/* resumo */
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+.rcard{background:rgba(255,255,255,0.6);border:1.5px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:all 0.18s;backdrop-filter:blur(8px)}
+.rcard:active{transform:scale(0.97)}
+.rcard.accent{background:var(--yellow-soft);border-color:rgba(245,200,66,0.3)}
+.rcard-icon{font-size:1rem;margin-bottom:6px}
+.rcard-num{font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:700;letter-spacing:-1px;line-height:1;color:var(--black)}
+.rcard-lbl{font-size:0.66rem;color:var(--muted);font-weight:500;margin-top:3px}
 
-.resumo-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.rcard{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:16px}
-.rcard-num{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;color:var(--black)}
-.rcard-label{font-size:0.7rem;color:var(--muted);font-weight:500}
+/* ia card */
+.ia-card{background:var(--black);border-radius:var(--r);padding:16px;margin-bottom:4px;position:relative;overflow:hidden}
+.ia-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(245,200,66,0.2) 0%,transparent 70%);pointer-events:none}
+.ia-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ia-badge{font-size:0.6rem;font-weight:700;background:var(--yellow);color:var(--black);padding:3px 8px;border-radius:99px;letter-spacing:0.05em}
+.ia-title{font-size:0.78rem;font-weight:600;color:rgba(245,240,232,0.6)}
+.ia-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.ia-item:last-child{border:none;padding-bottom:0}
+.ia-dot{width:6px;height:6px;border-radius:50%;background:var(--yellow);flex-shrink:0;margin-top:5px}
+.ia-text{font-size:0.82rem;color:rgba(245,240,232,0.8);line-height:1.45;font-weight:400}
 
-.list-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
-.list-item{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer}
-.list-item:last-child{border:none}
-.li-dot{width:8px;height:8px;border-radius:50%}
-.li-text{flex:1;font-size:0.88rem;font-weight:500}
-.li-text.done{text-decoration:line-through;color:var(--muted)}
-.li-tag{font-size:0.62rem;font-weight:700;padding:3px 9px;border-radius:99px}
-.tag-pend{background:var(--yellow-soft);color:var(--yellow-dark)}
+/* qa */
+.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.qa{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.qa-icon{width:50px;height:50px;border-radius:14px;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.15s}
+.qa:active .qa-icon{transform:scale(0.92)}
+.qa-lbl{font-size:0.6rem;font-weight:600;color:var(--muted);text-align:center}
+
+/* list */
+.list-card{background:rgba(255,255,255,0.6);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;backdrop-filter:blur(8px);margin-bottom:10px}
+.li{display:flex;align-items:center;gap:11px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s}
+.li:last-child{border:none}
+.li:active{background:rgba(255,255,255,0.7)}
+.li-ck{width:19px;height:19px;border-radius:5px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.li-ck.on{background:var(--black);border-color:var(--black)}
+.li-ck svg{display:none}
+.li-ck.on svg{display:block}
+.li-txt{flex:1;font-size:0.86rem;font-weight:500;transition:all 0.2s}
+.li-txt.done{text-decoration:line-through;color:var(--muted);font-weight:400}
+.li-tag{font-size:0.6rem;font-weight:700;padding:2px 8px;border-radius:99px}
+.tag-p{background:var(--yellow-soft);color:var(--yellow-dark)}
 .tag-ok{background:rgba(15,15,13,0.06);color:var(--muted)}
+.li-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;font-size:0.9rem;transition:color 0.15s;flex-shrink:0}
+.li-del:hover{color:var(--red)}
 
-/* FINANÇAS */
-.fin-hero{background:var(--black);border-radius:24px;padding:24px;margin-bottom:16px}
+/* add form */
+.add-form{display:none;padding:12px 16px;border-top:1px solid var(--border);background:rgba(255,255,255,0.4);gap:8px;align-items:center}
+.add-form.show{display:flex}
+.add-input{flex:1;background:rgba(255,255,255,0.8);border:1.5px solid var(--border2);border-radius:var(--rxs);padding:9px 12px;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:500;color:var(--text);outline:none}
+.add-input:focus{border-color:var(--yellow-dark);background:#fff}
+.add-btn{background:var(--black);color:var(--cream);border:none;border-radius:var(--rxs);padding:9px 14px;font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity 0.15s}
+.add-btn:active{opacity:0.8}
+
+/* finance */
+.fin-hero{background:var(--black);border-radius:22px;padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
+.fin-hero::after{content:'';position:absolute;bottom:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(245,200,66,0.2) 0%,transparent 65%);pointer-events:none}
+.fin-period{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.fin-month{font-size:0.8rem;font-weight:600;color:rgba(245,240,232,0.55)}
+.fin-navs{display:flex;gap:6px}
+.fin-nav{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.08);border:none;cursor:pointer;color:var(--cream);font-size:0.85rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+.fin-nav:hover{background:rgba(255,255,255,0.15)}
 .fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fcard{background:rgba(255,255,255,0.07);border-radius:var(--rs);padding:14px}
-.fcard-label{font-size:0.62rem;color:rgba(245,240,232,0.4);text-transform:uppercase;font-weight:600}
-.fcard-val{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:var(--cream)}
+.fcard{background:rgba(255,255,255,0.07);border-radius:10px;padding:13px}
+.fcard-lbl{font-size:0.58rem;color:rgba(245,240,232,0.38);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:4px}
+.fcard-val{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;color:var(--cream);letter-spacing:-0.5px}
 .fcard-val.y{color:var(--yellow)}
+.fcard-val.g{color:#7DD4A0}
+.fcard-val.r{color:#E07070}
 
-/* NAVBAR */
-.navbar{position:absolute;bottom:0;left:0;right:0;height:80px;background:rgba(245,240,232,0.92);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding-top:10px;z-index:50}
-.nb-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:0 12px}
-.nb-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.nb-item.on .nb-icon{background:var(--black)}
-.nb-item.on .nb-icon svg{color:var(--yellow)}
-.nb-item:not(.on) svg{color:var(--muted2)}
-.nb-label{font-size:0.58rem;font-weight:600;color:var(--muted2)}
-.nb-item.on .nb-label{color:var(--black)}
+/* conta item */
+.conta-li{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);transition:background 0.12s;cursor:default}
+.conta-li:last-child{border:none}
+.conta-li:hover{background:rgba(255,255,255,0.4)}
+.conta-name{font-size:0.86rem;font-weight:600}
+.conta-due{font-size:0.68rem;color:var(--muted);margin-top:1px;font-weight:400}
+.conta-val{font-size:0.88rem;font-weight:700}
+.conta-val.ok{color:var(--muted);font-weight:400}
+.cpill{font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:99px;margin-left:5px}
+.cp-p{background:var(--yellow-soft);color:var(--yellow-dark)}
+.cp-ok{background:rgba(15,15,13,0.06);color:var(--muted)}
+.conta-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;font-size:0.85rem;transition:color 0.15s}
+.conta-del:hover{color:var(--red)}
 
-/* TOAST */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--black);color:var(--cream);padding:11px 22px;border-radius:99px;font-size:0.78rem;font-weight:600;z-index:9999;opacity:0;transition:0.32s;pointer-events:none}
+/* rotina */
+.rot-hero{background:var(--black);border-radius:22px;padding:20px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.rot-date{font-size:0.72rem;color:rgba(245,240,232,0.45);margin-bottom:2px;font-weight:400}
+.rot-title{font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:var(--cream)}
+.rot-pct{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1}
+.rot-sub{font-size:0.62rem;color:rgba(245,240,232,0.38);margin-top:1px;text-align:right}
+.rot-li{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s}
+.rot-li:last-child{border:none}
+.rot-li:active{background:rgba(255,255,255,0.5)}
+.rot-time{font-size:0.66rem;font-weight:700;color:var(--muted);min-width:40px;text-align:right;font-family:'Outfit',sans-serif}
+.rot-dot{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0}
+.rot-info{flex:1}
+.rot-name{font-size:0.86rem;font-weight:600}
+.rot-name.done{text-decoration:line-through;color:var(--muted);font-weight:400}
+.rot-cat{font-size:0.66rem;color:var(--muted);margin-top:1px;font-weight:400}
+
+/* perfil */
+.perf-hero{background:var(--black);border-radius:22px;padding:26px 22px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden}
+.perf-hero::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(245,200,66,0.1) 0%,transparent 65%);pointer-events:none}
+.perf-av{width:68px;height:68px;border-radius:50%;background:var(--yellow);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:var(--black);font-family:'Outfit',sans-serif}
+.perf-name{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;color:var(--cream);letter-spacing:-0.3px}
+.perf-since{font-size:0.7rem;color:rgba(245,240,232,0.38);margin-top:3px;font-weight:400}
+.perf-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;margin-top:18px}
+.pstat{background:rgba(255,255,255,0.04);padding:12px 6px;text-align:center}
+.pstat-val{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:var(--yellow)}
+.pstat-lbl{font-size:0.58rem;color:rgba(245,240,232,0.38);margin-top:2px;font-weight:500}
+.perf-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s}
+.perf-row:last-child{border:none}
+.perf-row:active{background:rgba(255,255,255,0.4)}
+.perf-l{display:flex;align-items:center;gap:11px}
+.perf-icon{width:34px;height:34px;border-radius:9px;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;font-size:0.88rem}
+.perf-row-name{font-size:0.86rem;font-weight:500}
+.perf-arr{color:var(--muted);font-size:0.85rem}
+
+/* export modal */
+#modal{position:absolute;inset:0;z-index:600;background:rgba(15,15,13,0.6);display:none;align-items:flex-end;backdrop-filter:blur(4px)}
+#modal.show{display:flex}
+.modal-box{background:var(--cream);border-radius:24px 24px 0 0;padding:28px 24px;padding-bottom:max(32px,env(safe-area-inset-bottom,32px));width:100%}
+.modal-title{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.modal-sub{font-size:0.8rem;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.modal-btns{display:flex;flex-direction:column;gap:10px}
+.btn-outline{background:transparent;border:1.5px solid var(--border2);color:var(--text)}
+.btn-red{background:var(--red-soft);border:1.5px solid rgba(224,92,92,0.2);color:var(--red)}
+
+/* add conta modal */
+#modalConta{position:absolute;inset:0;z-index:600;background:rgba(15,15,13,0.6);display:none;align-items:flex-end;backdrop-filter:blur(4px)}
+#modalConta.show{display:flex}
+
+/* navbar */
+.navbar{position:absolute;bottom:0;left:0;right:0;height:76px;background:rgba(245,240,232,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:flex-start;padding-top:10px;z-index:50}
+.nb{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:0 10px;transition:opacity 0.15s}
+.nb:active{opacity:0.6}
+.nb-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.nb.on .nb-icon{background:var(--black)}
+.nb:not(.on) .nb-icon svg{color:var(--muted2)}
+.nb.on .nb-icon svg{color:var(--yellow)}
+.nb-lbl{font-size:0.56rem;font-weight:600;color:var(--muted2);transition:color 0.2s}
+.nb.on .nb-lbl{color:var(--black)}
+
+/* toast */
+.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--black);color:var(--cream);padding:10px 20px;border-radius:99px;font-size:0.76rem;font-weight:600;z-index:9999;opacity:0;transition:all 0.32s cubic-bezier(0.34,1.4,0.64,1);pointer-events:none;white-space:nowrap;font-family:'Poppins',sans-serif;max-width:320px;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* SEC HEAD */
-.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:20px}
-.sec-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted)}
-.sec-link{font-size:0.78rem;font-weight:600;color:var(--black);cursor:pointer}
 </style>
 </head>
 <body>
-
 <div class="toast" id="toast"></div>
 
 <div class="shell">
-  <!-- ONBOARDING -->
-  <div id="ob">
-    <div class="splash" id="splash">
-      <div class="splash-logo">apê<span>.</span></div>
-      <div class="splash-tagline">sua vida adulta, organizada</div>
-      <div class="splash-dot"></div>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-logo">apê<span>.</span></div>
+  <div class="splash-tag">sua vida adulta, organizada</div>
+  <div class="splash-dot"></div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="ob">
+  <div class="ob-body" id="obBody">
+
+    <!-- step 0 -->
+    <div class="step active" id="step0">
+      <div class="step-label">Bem-vindo</div>
+      <div class="step-title">Morar sozinho é<br><em>incrível.</em><br>E bem caótico.</div>
+      <div class="step-desc">O apê. organiza tudo: finanças, rotina, tarefas e muito mais — feito pra quem está montando a vida num apê.</div>
+      <div class="illo-box">🗝️<div class="illo-pill">Parabéns pelo apê! 🎉</div></div>
     </div>
 
-    <div class="ob-steps" id="obSteps">
-      <!-- Welcome -->
-      <div class="step active" id="step0">
-        <div class="step-top">
-          <div class="step-num">Bem-vindo</div>
-          <div class="step-title">Morar sozinho é<br><em>incrível.</em><br>E bem caótico.</div>
-          <div class="step-desc">O apê. te ajuda a organizar tudo: finanças, rotina e as mil coisas que vêm junto com o lar.</div>
+    <!-- step 1 -->
+    <div class="step" id="step1">
+      <div class="step-label">Passo 1 de 3</div>
+      <div class="step-title">Como posso<br>te <em>chamar?</em></div>
+      <div class="step-desc">Vamos personalizar tudo pra você.</div>
+      <div class="field-group">
+        <div class="field-wrap">
+          <label class="field-label">Seu nome</label>
+          <input class="field-input" id="inpNome" type="text" placeholder="Ex: João, Ana..." autocomplete="off">
         </div>
-        <div class="illo-wrap">
-          <div class="illo-box">🗝️<div class="illo-pill">Parabéns pelo apê! 🎉</div></div>
+        <div class="field-wrap">
+          <label class="field-label">Sua idade</label>
+          <input class="field-input" id="inpIdade" type="number" placeholder="Ex: 24" min="18" max="50">
         </div>
-      </div>
-
-      <!-- Passo 1 -->
-      <div class="step" id="step1">
-        <div class="step-top">
-          <div class="step-num">Passo 1 de 3</div>
-          <div class="step-title">Como posso<br>te <em>chamar?</em></div>
-        </div>
-        <div class="field-group">
-          <div>
-            <div class="field-label">Seu nome</div>
-            <input class="field-input" id="inpNome" type="text" placeholder="Ex: João, Ana...">
-          </div>
-          <div>
-            <div class="field-label">Cidade</div>
-            <input class="field-input" id="inpCidade" type="text" placeholder="Ex: São Paulo, BH...">
-          </div>
-        </div>
-      </div>
-
-      <!-- Passo 2 -->
-      <div class="step" id="step2">
-        <div class="step-top">
-          <div class="step-num">Passo 2 de 3</div>
-          <div class="step-title">Agora, o<br><em>financeiro.</em></div>
-        </div>
-        <div class="field-group">
-          <div>
-            <div class="field-label">Renda mensal</div>
-            <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpRenda" type="number" placeholder="0,00"></div>
-          </div>
-          <div>
-            <div class="field-label">Saldo atual</div>
-            <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpSaldo" type="number" placeholder="0,00"></div>
-          </div>
-          <div>
-            <div class="field-label">Aluguel / Financiamento</div>
-            <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpAluguel" type="number" placeholder="0,00"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Passo 3 -->
-      <div class="step" id="step3">
-        <div class="step-top">
-          <div class="step-num">Passo 3 de 3</div>
-          <div class="step-title">O que já<br>tem no <em>apê?</em></div>
-        </div>
-        <div class="field-group">
-          <div class="chips" id="obItems">
-            <div class="chip on" data-item="Geladeira">Geladeira</div>
-            <div class="chip" data-item="Fogão">Fogão</div>
-            <div class="chip" data-item="Sofá">Sofá</div>
-            <div class="chip" data-item="TV">TV</div>
-            <div class="chip" data-item="Máquina de lavar">Máquina de lavar</div>
-            <div class="chip" data-item="Internet">Internet</div>
-            <div class="chip" data-item="Cama">Cama</div>
-          </div>
+        <div class="field-wrap">
+          <label class="field-label">Cidade</label>
+          <input class="field-input" id="inpCidade" type="text" placeholder="Ex: São Paulo, BH...">
         </div>
       </div>
     </div>
 
-    <div class="ob-bottom">
-      <div class="progress-dots">
-        <div class="pdot on" id="pd0"></div>
-        <div class="pdot" id="pd1"></div>
-        <div class="pdot" id="pd2"></div>
-        <div class="pdot" id="pd3"></div>
-      </div>
-      <button class="btn-primary" id="btnOb" onclick="Logic.obNext()">Continuar</button>
-      <div class="skip-link" onclick="Logic.demoMode()">Entrar como visitante</div>
-    </div>
-  </div>
-
-  <!-- APP MAIN -->
-  <div id="app">
-    <div class="statusbar">
-      <span>9:41</span>
-      <div style="display:flex;gap:5px"><span>●●●●</span><span>5G</span></div>
-    </div>
-
-    <div class="topbar">
-      <div>
-        <div class="app-logo">apê<span>.</span></div>
-        <div class="greeting-sub" id="greetSub">Boa tarde 👋</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <button class="icon-btn"><div class="notif-badge"></div><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
-        <button class="avatar-btn" id="avatarBtn">F</button>
+    <!-- step 2 -->
+    <div class="step" id="step2">
+      <div class="step-label">Passo 2 de 3</div>
+      <div class="step-title">Agora, o<br><em>financeiro.</em></div>
+      <div class="step-desc">Não precisa ser exato — uma estimativa já ajuda muito.</div>
+      <div class="field-group">
+        <div class="field-wrap">
+          <label class="field-label">Renda mensal</label>
+          <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpRenda" type="number" placeholder="0"></div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Saldo atual</label>
+          <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpSaldo" type="number" placeholder="0"></div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Aluguel ou financiamento</label>
+          <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpAluguel" type="number" placeholder="0"></div>
+        </div>
       </div>
     </div>
 
-    <div class="tabs">
-      <button class="tab on" onclick="UI.switchTab('home')">Início</button>
-      <button class="tab" onclick="UI.switchTab('financas')">Finanças</button>
-      <button class="tab" onclick="UI.switchTab('tarefas')">Conquistas</button>
-      <button class="tab" onclick="UI.switchTab('perfil')">Perfil</button>
-    </div>
-
-    <div class="content" id="mainContent">
-      <!-- PANEL HOME -->
-      <div class="panel on" id="panel-home">
-        <div class="hero-card">
-          <div class="hero-greeting" id="userTitle">Carregando...</div>
-          <div class="hero-name" id="heroName">Usuário <span>👋</span></div>
-          <div class="hero-stats">
-            <div class="hstat">
-              <div class="hstat-label">Saldo</div>
-              <div class="hstat-val yellow" id="valSaldo">R$ 0</div>
-              <div class="hstat-sub">Disponível</div>
-            </div>
-            <div class="hstat">
-              <div class="hstat-label">Nível</div>
-              <div class="hstat-val" id="valLevel">1</div>
-              <div class="hstat-sub" id="valXPLabel">0 / 300 XP</div>
-            </div>
+    <!-- step 3 -->
+    <div class="step" id="step3">
+      <div class="step-label">Passo 3 de 3</div>
+      <div class="step-title">Situação<br>do seu <em>apê?</em></div>
+      <div class="step-desc">Selecione tudo que se aplica. Isso ajuda o apê. a te dar sugestões melhores.</div>
+      <div class="field-group">
+        <div class="field-wrap">
+          <label class="field-label">Tipo de moradia</label>
+          <div class="chips">
+            <div class="chip on" onclick="toggleChip(this)">Alugado</div>
+            <div class="chip" onclick="toggleChip(this)">Financiado</div>
+            <div class="chip" onclick="toggleChip(this)">Quitado</div>
+            <div class="chip" onclick="toggleChip(this)">Rep</div>
           </div>
         </div>
-
-        <div class="ai-card" id="aiCard">
-          <div class="ai-icon">💡</div>
-          <div class="ai-text" id="aiSuggestion">Analizando seu perfil para dar dicas...</div>
-        </div>
-
-        <div class="prog-card">
-          <div class="prog-top">
-            <div>
-              <div class="prog-title">Progresso do Apê</div>
-              <div class="prog-sub" id="progSub">0 de 10 itens</div>
-            </div>
-            <div class="prog-pct" id="progPct">0%</div>
-          </div>
-          <div class="prog-bg"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-        </div>
-
-        <div class="sec-head"><span class="sec-title">Próximos Passos</span></div>
-        <div class="list-card" id="homeTaskList">
-          <!-- Render dinâmico -->
-        </div>
-      </div>
-
-      <!-- PANEL FINANÇAS -->
-      <div class="panel" id="panel-financas">
-        <div class="fin-hero">
-          <div class="fin-grid">
-            <div class="fcard">
-              <div class="fcard-label">Renda</div>
-              <div class="fcard-val y" id="finRenda">R$ 0</div>
-            </div>
-            <div class="fcard">
-              <div class="fcard-label">Aluguel</div>
-              <div class="fcard-val" id="finAluguel">R$ 0</div>
-            </div>
+        <div class="field-wrap" style="margin-top:8px">
+          <label class="field-label">O que ainda falta?</label>
+          <div class="chips" id="faltaChips">
+            <div class="chip on" onclick="toggleChip(this)">Geladeira</div>
+            <div class="chip on" onclick="toggleChip(this)">Sofá</div>
+            <div class="chip" onclick="toggleChip(this)">TV</div>
+            <div class="chip" onclick="toggleChip(this)">Máquina de lavar</div>
+            <div class="chip" onclick="toggleChip(this)">Mesa</div>
+            <div class="chip" onclick="toggleChip(this)">Micro-ondas</div>
+            <div class="chip" onclick="toggleChip(this)">Armários</div>
+            <div class="chip" onclick="toggleChip(this)">Internet</div>
           </div>
         </div>
-        
-        <div class="sec-head">
-          <span class="sec-title">Despesas do Mês</span>
-          <span class="sec-link" onclick="Logic.addExpense()">+ Adicionar</span>
-        </div>
-        <div class="list-card" id="expenseList">
-          <!-- Render dinâmico -->
-        </div>
       </div>
-
-      <!-- PANEL PERFIL -->
-      <div class="panel" id="panel-perfil">
-        <div class="hero-card" style="text-align:center">
-            <div class="avatar-btn" style="width:70px;height:70px;margin:0 auto 15px;font-size:1.5rem" id="perfAv">U</div>
-            <div class="hero-name" id="perfName" style="margin-bottom:5px">Usuário</div>
-            <div class="hero-greeting" id="perfTitle">Nível 1</div>
-            <button class="btn-primary" style="margin-top:20px; background:rgba(255,255,255,0.1)" onclick="Logic.reset()">Resetar Dados</button>
-        </div>
-        
-        <div class="sec-head"><span class="sec-title">Suas Conquistas</span></div>
-        <div class="list-card" id="badgeList">
-          <!-- Render dinâmico de badges -->
-        </div>
-      </div>
-      
-      <!-- PANEL CONQUISTAS (Antigo Tarefas) -->
-      <div class="panel" id="panel-tarefas">
-          <div class="sec-head"><span class="sec-title">Missões de Adulto</span></div>
-          <div class="list-card" id="fullTaskList"></div>
-      </div>
-
     </div>
 
-    <nav class="navbar">
-      <div class="nb-item on" onclick="UI.switchTab('home')">
-        <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <span class="nb-label">Início</span>
-      </div>
-      <div class="nb-item" onclick="UI.switchTab('financas')">
-        <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-        <span class="nb-label">Finanças</span>
-      </div>
-      <div class="nb-item" onclick="UI.switchTab('tarefas')">
-        <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-        <span class="nb-label">Missões</span>
-      </div>
-      <div class="nb-item" onclick="UI.switchTab('perfil')">
-        <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <span class="nb-label">Perfil</span>
-      </div>
-    </nav>
+  </div><!-- /ob-body -->
+
+  <div class="ob-bottom">
+    <div class="dots-row">
+      <div class="pdot on" id="pd0"></div>
+      <div class="pdot" id="pd1"></div>
+      <div class="pdot" id="pd2"></div>
+      <div class="pdot" id="pd3"></div>
+    </div>
+    <button class="btn btn-dark" id="btnOb" onclick="obNext()"><span id="obLbl">Começar</span></button>
+    <div class="skip-row" id="skipRow" onclick="finishOb()">Pular</div>
   </div>
 </div>
 
+<!-- APP -->
+<div id="app">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="sb-r"><span>●●●●</span><span> 5G</span></div>
+  </div>
+  <div class="topbar">
+    <div>
+      <div class="app-logo">apê<span>.</span></div>
+      <div class="greet-sub" id="greetSub">Boa tarde 👋</div>
+    </div>
+    <div class="topbar-r">
+      <button class="icon-btn" onclick="openModal()">
+        <div class="notif-dot"></div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="av-btn" id="avBtn">F</button>
+    </div>
+  </div>
+
+  <div class="tabs-row">
+    <button class="tab on" onclick="switchTab('home',this)">Início</button>
+    <button class="tab" onclick="switchTab('financas',this)">Finanças</button>
+    <button class="tab" onclick="switchTab('rotina',this)">Rotina</button>
+    <button class="tab" onclick="switchTab('tarefas',this)">Tarefas</button>
+    <button class="tab" onclick="switchTab('perfil',this)">Perfil</button>
+  </div>
+
+  <div class="content" id="mainContent">
+
+    <!-- HOME -->
+    <div class="panel on" id="panel-home">
+      <div class="hero-card">
+        <div class="hero-greet">Bem-vindo de volta,</div>
+        <div class="hero-name" id="heroName">Fávaro <span>👋</span></div>
+        <div class="hero-grid">
+          <div class="hstat">
+            <div class="hstat-lbl">Saldo atual</div>
+            <div class="hstat-val y" id="heroSaldo">—</div>
+            <div class="hstat-sub">Disponível</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-lbl">Apê completo</div>
+            <div class="hstat-val" id="heroProgPct">0%</div>
+            <div class="hstat-sub" id="heroProgSub">0 de 0 tarefas</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-lbl">Renda mensal</div>
+            <div class="hstat-val" id="heroRenda">—</div>
+            <div class="hstat-sub">Cadastrada</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-lbl">Rotina hoje</div>
+            <div class="hstat-val" id="heroRotina">0/0</div>
+            <div class="hstat-sub">Concluídas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-pad" style="margin-bottom:14px">
+        <div class="prog-top">
+          <div>
+            <div class="prog-title">Montando o apê</div>
+            <div class="prog-sub-txt" id="progSubTxt">Nenhuma tarefa ainda</div>
+          </div>
+          <div class="prog-pct" id="progPct">0%</div>
+        </div>
+        <div class="prog-bg"><div class="prog-fill" id="progBar" style="width:0%"></div></div>
+        <div class="prog-meta"><span>Início</span><span>Apê dos sonhos ✨</span></div>
+      </div>
+
+      <div class="res-grid">
+        <div class="rcard" onclick="switchTab('tarefas',null)">
+          <div class="rcard-icon">📋</div>
+          <div class="rcard-num" id="resPend">0</div>
+          <div class="rcard-lbl">Tarefas pendentes</div>
+        </div>
+        <div class="rcard accent" onclick="switchTab('financas',null)">
+          <div class="rcard-icon">💸</div>
+          <div class="rcard-num" id="resContas">0</div>
+          <div class="rcard-lbl">Contas a vencer</div>
+        </div>
+      </div>
+
+      <div class="sec-head"><span class="sec-title">💡 Sugestões do apê.</span></div>
+      <div class="ia-card" id="iaCard">
+        <div class="ia-header">
+          <span class="ia-badge">IA</span>
+          <span class="ia-title">Baseado nos seus dados</span>
+        </div>
+        <div id="iaSugestoes"></div>
+      </div>
+
+      <div class="sec-head"><span class="sec-title">Ações rápidas</span></div>
+      <div class="qa-grid">
+        <div class="qa" onclick="switchTab('tarefas',null);toggleAddForm('formTarefa')">
+          <div class="qa-icon">✅</div><div class="qa-lbl">Tarefa</div>
+        </div>
+        <div class="qa" onclick="switchTab('financas',null);openModalConta()">
+          <div class="qa-icon">💰</div><div class="qa-lbl">Despesa</div>
+        </div>
+        <div class="qa" onclick="switchTab('rotina',null);toggleAddForm('formRotina')">
+          <div class="qa-icon">🕐</div><div class="qa-lbl">Rotina</div>
+        </div>
+        <div class="qa" onclick="switchTab('tarefas',null)">
+          <div class="qa-icon">🛒</div><div class="qa-lbl">Compras</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINANCAS -->
+    <div class="panel" id="panel-financas">
+      <div class="fin-hero">
+        <div class="fin-period">
+          <div class="fin-month" id="finMonth">📅 —</div>
+          <div class="fin-navs">
+            <button class="fin-nav" onclick="showToast('Mês anterior')">‹</button>
+            <button class="fin-nav" onclick="showToast('Próximo mês')">›</button>
+          </div>
+        </div>
+        <div class="fin-grid">
+          <div class="fcard"><div class="fcard-lbl">Receita</div><div class="fcard-val y" id="finRenda">—</div></div>
+          <div class="fcard"><div class="fcard-lbl">Despesas</div><div class="fcard-val r" id="finDespesas">R$ 0</div></div>
+          <div class="fcard"><div class="fcard-lbl">Saldo</div><div class="fcard-val g" id="finSaldo">—</div></div>
+          <div class="fcard"><div class="fcard-lbl">Moradia</div><div class="fcard-val" id="finAluguel">—</div></div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <span class="sec-title">Contas do mês</span>
+        <span class="sec-action" onclick="openModalConta()">+ Adicionar</span>
+      </div>
+      <div class="list-card" id="contaList">
+        <div style="padding:20px;text-align:center;color:var(--muted);font-size:0.82rem">Nenhuma conta ainda</div>
+      </div>
+    </div>
+
+    <!-- ROTINA -->
+    <div class="panel" id="panel-rotina">
+      <div class="rot-hero">
+        <div>
+          <div class="rot-date" id="rotDate">—</div>
+          <div class="rot-title">Minha Rotina</div>
+        </div>
+        <div>
+          <div class="rot-pct" id="rotPct">0%</div>
+          <div class="rot-sub">concluído</div>
+        </div>
+      </div>
+      <div class="list-card" id="rotinaList">
+        <div style="padding:20px;text-align:center;color:var(--muted);font-size:0.82rem">Nenhum item ainda</div>
+        <div class="add-form show" id="formRotina">
+          <input class="add-input" id="inpRotina" placeholder="Ex: Café da manhã 7:00" type="text">
+          <button class="add-btn" onclick="addRotinaItem()">+ Add</button>
+        </div>
+      </div>
+      <div class="sec-head">
+        <span class="sec-title">Adicionar à rotina</span>
+        <span class="sec-action" onclick="toggleAddForm('formRotina')">+ Novo</span>
+      </div>
+    </div>
+
+    <!-- TAREFAS -->
+    <div class="panel" id="panel-tarefas">
+      <div class="sec-head" style="margin-top:4px">
+        <span class="sec-title">Lista do apê</span>
+        <span class="sec-action" onclick="toggleAddForm('formTarefa')">+ Nova</span>
+      </div>
+      <div class="list-card" id="tarefaList">
+        <div style="padding:20px;text-align:center;color:var(--muted);font-size:0.82rem">Nenhuma tarefa ainda</div>
+        <div class="add-form" id="formTarefa">
+          <input class="add-input" id="inpTarefa" placeholder="Ex: Comprar geladeira" type="text">
+          <button class="add-btn" onclick="addTarefa()">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div class="panel" id="panel-perfil">
+      <div class="perf-hero">
+        <div class="perf-av" id="perfAv">F</div>
+        <div class="perf-name" id="perfName">—</div>
+        <div class="perf-since" id="perfSince">—</div>
+        <div class="perf-stats">
+          <div class="pstat"><div class="pstat-val" id="pstatPct">0%</div><div class="pstat-lbl">Apê completo</div></div>
+          <div class="pstat"><div class="pstat-val" id="pstatTarefas">0</div><div class="pstat-lbl">Tarefas feitas</div></div>
+          <div class="pstat"><div class="pstat-val" id="pstatContas">0</div><div class="pstat-lbl">Contas</div></div>
+        </div>
+      </div>
+      <div class="list-card">
+        <div class="perf-row" onclick="openModal()">
+          <div class="perf-l"><div class="perf-icon">💾</div><div class="perf-row-name">Exportar / Resetar dados</div></div>
+          <span class="perf-arr">›</span>
+        </div>
+        <div class="perf-row" onclick="showToast('Em breve: editar perfil')">
+          <div class="perf-l"><div class="perf-icon">👤</div><div class="perf-row-name">Editar perfil</div></div>
+          <span class="perf-arr">›</span>
+        </div>
+        <div class="perf-row" onclick="showToast('Em breve: notificações')">
+          <div class="perf-l"><div class="perf-icon">🔔</div><div class="perf-row-name">Notificações</div></div>
+          <span class="perf-arr">›</span>
+        </div>
+        <div class="perf-row" onclick="showToast('Em breve: aparência')">
+          <div class="perf-l"><div class="perf-icon">🎨</div><div class="perf-row-name">Aparência</div></div>
+          <span class="perf-arr">›</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <nav class="navbar">
+    <div class="nb on" id="nb-home" onclick="switchTab('home',null);setNb('home')">
+      <div class="nb-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <span class="nb-lbl">Início</span>
+    </div>
+    <div class="nb" id="nb-financas" onclick="switchTab('financas',null);setNb('financas')">
+      <div class="nb-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+      <span class="nb-lbl">Finanças</span>
+    </div>
+    <div class="nb" id="nb-rotina" onclick="switchTab('rotina',null);setNb('rotina')">
+      <div class="nb-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <span class="nb-lbl">Rotina</span>
+    </div>
+    <div class="nb" id="nb-tarefas" onclick="switchTab('tarefas',null);setNb('tarefas')">
+      <div class="nb-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+      <span class="nb-lbl">Tarefas</span>
+    </div>
+    <div class="nb" id="nb-perfil" onclick="switchTab('perfil',null);setNb('perfil')">
+      <div class="nb-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nb-lbl">Perfil</span>
+    </div>
+  </nav>
+</div>
+
+<!-- MODAL export/reset -->
+<div id="modal" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-title">Gerenciar dados</div>
+    <div class="modal-sub">Seus dados ficam salvos neste navegador. Você pode exportar como JSON ou resetar tudo.</div>
+    <div class="modal-btns">
+      <button class="btn btn-dark" onclick="exportData()">⬇️ Exportar dados</button>
+      <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-red" onclick="resetData()">🗑️ Resetar tudo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL add conta -->
+<div id="modalConta" onclick="closeModalConta()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-title">Adicionar conta</div>
+    <div class="modal-sub" style="margin-bottom:14px">Informe os detalhes da conta.</div>
+    <div class="field-group" style="margin-bottom:16px">
+      <div class="field-wrap">
+        <label class="field-label">Nome</label>
+        <input class="field-input" id="contaNome" placeholder="Ex: Internet, Aluguel..." type="text">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Valor</label>
+        <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="contaValor" type="number" placeholder="0"></div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Vencimento</label>
+        <input class="field-input" id="contaVenc" type="text" placeholder="Ex: Dia 10">
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-dark" onclick="addConta()">Adicionar conta</button>
+      <button class="btn btn-outline" onclick="closeModalConta()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /shell -->
+
 <script>
-/**
- * SISTEMA APÊ - CORE LOGIC
- */
-
-// 1. DATA STATE
-let state = {
-    user: { nome: "", cidade: "", renda: 0, saldo: 0, aluguel: 0 },
-    xp: 0,
-    level: 1,
-    title: "Sobrevivente do Colchão",
-    onboardingComplete: false,
-    tasks: [
-        { id: 1, text: "Comprar Colchão", xp: 150, done: false, category: "Móveis" },
-        { id: 2, text: "Instalar Geladeira", xp: 300, done: false, category: "Eletro" },
-        { id: 3, text: "Contratar Internet", xp: 100, done: false, category: "Serviços" },
-        { id: 4, text: "Comprar Sofá", xp: 400, done: false, category: "Móveis" },
-        { id: 5, text: "Primeira Faxina", xp: 100, done: false, category: "Rotina" },
-        { id: 6, text: "Organizar Documentos", xp: 50, done: false, category: "Admin" },
-        { id: 7, text: "Instalar Chuveiro", xp: 200, done: false, category: "Reparo" },
-        { id: 8, text: "Comprar Filtro de Água", xp: 120, done: false, category: "Cozinha" }
-    ],
-    expenses: [
-        { id: 1, title: "Aluguel", value: 0, paid: false }
-    ],
-    badges: []
+// ============ STATE ============
+var S = {
+  user: {nome:'',idade:'',cidade:'',renda:0,saldo:0,aluguel:0},
+  tarefas: [],
+  contas: [],
+  rotina: [],
+  onboarded: false
 };
 
-const levels = [
-    { lvl: 1, min: 0, title: "Sobrevivente do Colchão" },
-    { lvl: 2, min: 300, title: "Morador Iniciante" },
-    { lvl: 3, min: 700, title: "Domador de Boletos" },
-    { lvl: 4, min: 1200, title: "Caçador de Promoções" },
-    { lvl: 5, min: 2000, title: "Adulto Funcional" },
-    { lvl: 6, min: 3000, title: "Mestre do Apê" }
-];
+// ============ LOCALSTORAGE ============
+function save(){
+  try{ localStorage.setItem('ape_data', JSON.stringify(S)); } catch(e){}
+}
+function load(){
+  try{
+    var d = localStorage.getItem('ape_data');
+    if(d){ S = JSON.parse(d); return true; }
+  } catch(e){}
+  return false;
+}
 
-// 2. STORAGE ENGINE
-const Storage = {
-    save() {
-        localStorage.setItem('ape_app_data', JSON.stringify(state));
-    },
-    load() {
-        const saved = localStorage.getItem('ape_app_data');
-        if (saved) {
-            state = JSON.parse(saved);
-            return true;
-        }
-        return false;
+// ============ SPLASH + INIT ============
+window.addEventListener('load', function(){
+  var hasData = load();
+  setTimeout(function(){
+    var sp = document.getElementById('splash');
+    sp.style.opacity = '0';
+    setTimeout(function(){
+      sp.style.display = 'none';
+      if(hasData && S.onboarded){
+        launchApp();
+      } else {
+        var ob = document.getElementById('ob');
+        ob.classList.add('show');
+        updateDots();
+      }
+    }, 500);
+  }, 1600);
+});
+
+// ============ ONBOARDING ============
+var curStep = 0;
+
+function obNext(){
+  if(curStep === 0){
+    goStep(1);
+  } else if(curStep === 1){
+    var nome = document.getElementById('inpNome').value.trim();
+    if(!nome){ showToast('Digite seu nome pra continuar 😊'); return; }
+    S.user.nome = nome;
+    S.user.idade = document.getElementById('inpIdade').value;
+    S.user.cidade = document.getElementById('inpCidade').value;
+    goStep(2);
+  } else if(curStep === 2){
+    S.user.renda = parseFloat(document.getElementById('inpRenda').value) || 0;
+    S.user.saldo = parseFloat(document.getElementById('inpSaldo').value) || 0;
+    S.user.aluguel = parseFloat(document.getElementById('inpAluguel').value) || 0;
+    goStep(3);
+  } else {
+    // collect chips
+    var falta = [];
+    document.querySelectorAll('#faltaChips .chip.on').forEach(function(c){ falta.push(c.textContent); });
+    falta.forEach(function(item){
+      S.tarefas.push({id: Date.now()+Math.random(), texto: 'Comprar '+item, done: false});
+    });
+    finishOb();
+  }
+}
+
+function goStep(n){
+  document.getElementById('step'+curStep).classList.remove('active');
+  curStep = n;
+  document.getElementById('step'+curStep).classList.add('active');
+  document.getElementById('obBody').scrollTop = 0;
+  updateDots();
+  document.getElementById('obLbl').textContent = curStep === 3 ? 'Entrar no apê 🚀' : 'Continuar';
+  document.getElementById('skipRow').style.display = curStep === 0 ? 'block' : 'none';
+}
+
+function updateDots(){
+  for(var i=0;i<4;i++){
+    var d = document.getElementById('pd'+i);
+    if(d) d.className = i===curStep ? 'pdot on' : 'pdot';
+  }
+}
+
+function finishOb(){
+  S.onboarded = true;
+  save();
+  var ob = document.getElementById('ob');
+  ob.style.transition = 'opacity 0.35s ease';
+  ob.style.opacity = '0';
+  setTimeout(function(){
+    ob.classList.remove('show');
+    ob.style.opacity = '';
+    launchApp();
+  }, 340);
+}
+
+function toggleChip(el){ el.classList.toggle('on'); }
+
+// ============ LAUNCH APP ============
+function launchApp(){
+  applyUserData();
+  renderAll();
+  generateIA();
+
+  var app = document.getElementById('app');
+  app.style.opacity = '0';
+  app.classList.add('show');
+  app.style.transition = 'opacity 0.35s ease';
+  setTimeout(function(){ app.style.opacity='1'; }, 20);
+
+  // date
+  var months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var now = new Date();
+  document.getElementById('finMonth').textContent = '📅 '+months[now.getMonth()]+' '+now.getFullYear();
+  var days = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  document.getElementById('rotDate').textContent = days[now.getDay()]+', '+now.getDate()+' de '+months[now.getMonth()];
+}
+
+function applyUserData(){
+  var u = S.user;
+  var nome = u.nome || 'Você';
+  var ini = nome.charAt(0).toUpperCase();
+  document.getElementById('heroName').innerHTML = nome+' <span>👋</span>';
+  document.getElementById('avBtn').textContent = ini;
+  document.getElementById('perfAv').textContent = ini;
+  document.getElementById('perfName').textContent = nome;
+  document.getElementById('perfSince').textContent = u.cidade ? 'Morando sozinho · '+u.cidade : 'Morando sozinho';
+  document.getElementById('greetSub').textContent = 'Boa tarde, '+nome+' 👋';
+  document.getElementById('heroSaldo').textContent = u.saldo ? fmtBRL(u.saldo) : '—';
+  document.getElementById('heroRenda').textContent = u.renda ? fmtBRL(u.renda) : '—';
+  document.getElementById('finRenda').textContent = u.renda ? fmtBRL(u.renda) : '—';
+  document.getElementById('finSaldo').textContent = u.saldo ? fmtBRL(u.saldo) : '—';
+  document.getElementById('finAluguel').textContent = u.aluguel ? fmtBRL(u.aluguel) : '—';
+}
+
+function fmtBRL(v){
+  return 'R$ '+parseFloat(v).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
+}
+
+// ============ RENDER ============
+function renderAll(){
+  renderTarefas();
+  renderContas();
+  renderRotina();
+  updateStats();
+}
+
+function renderTarefas(){
+  var list = document.getElementById('tarefaList');
+  var form = document.getElementById('formTarefa');
+  list.innerHTML = '';
+  if(!S.tarefas.length){
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.82rem">Nenhuma tarefa ainda</div>';
+  } else {
+    S.tarefas.forEach(function(t){
+      var div = document.createElement('div');
+      div.className = 'li';
+      div.innerHTML =
+        '<div class="li-ck '+(t.done?'on':'')+'" onclick="toggleTarefa(\''+t.id+'\')">'+
+          '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#F5F0E8" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg>'+
+        '</div>'+
+        '<span class="li-txt'+(t.done?' done':'')+'">'+escHtml(t.texto)+'</span>'+
+        '<span class="li-tag '+(t.done?'tag-ok':'tag-p')+'">'+(t.done?'Feito':'Pendente')+'</span>'+
+        '<button class="li-del" onclick="delTarefa(\''+t.id+'\')">✕</button>';
+      list.appendChild(div);
+    });
+  }
+  list.appendChild(form);
+}
+
+function renderContas(){
+  var list = document.getElementById('contaList');
+  list.innerHTML = '';
+  if(!S.contas.length){
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.82rem">Nenhuma conta ainda</div>';
+    return;
+  }
+  var totalDespesas = 0;
+  S.contas.forEach(function(c){
+    totalDespesas += parseFloat(c.valor)||0;
+    var div = document.createElement('div');
+    div.className = 'conta-li';
+    div.innerHTML =
+      '<div class="conta-left">'+
+        '<div class="conta-name">'+escHtml(c.nome)+'<span class="cpill '+(c.pago?'cp-ok':'cp-p')+'">'+(c.pago?'Pago':'Pendente')+'</span></div>'+
+        '<div class="conta-due">'+escHtml(c.venc||'')+'</div>'+
+      '</div>'+
+      '<div style="display:flex;align-items:center;gap:8px">'+
+        '<div class="conta-val'+(c.pago?' ok':'')+'">'+fmtBRL(c.valor)+'</div>'+
+        '<button class="conta-del" onclick="toggleConta(\''+c.id+'\')">'+( c.pago?'↩':'✓')+'</button>'+
+        '<button class="conta-del" onclick="delConta(\''+c.id+'\')">✕</button>'+
+      '</div>';
+    list.appendChild(div);
+  });
+  document.getElementById('finDespesas').textContent = fmtBRL(totalDespesas);
+}
+
+function renderRotina(){
+  var list = document.getElementById('rotinaList');
+  var form = document.getElementById('formRotina');
+  list.innerHTML = '';
+  if(!S.rotina.length){
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.82rem">Nenhum item ainda</div>';
+  } else {
+    var emojis = ['🌅','🍳','💪','💼','🏠','📚','🍽️','😴'];
+    S.rotina.forEach(function(r,i){
+      var div = document.createElement('div');
+      div.className = 'rot-li';
+      div.innerHTML =
+        '<div class="rot-time">'+escHtml(r.hora||'—')+'</div>'+
+        '<div class="rot-dot" style="background:var(--cream-dark)">'+emojis[i%emojis.length]+'</div>'+
+        '<div class="rot-info">'+
+          '<div class="rot-name'+(r.done?' done':'')+'">'+escHtml(r.texto)+'</div>'+
+          '<div class="rot-cat">Rotina diária</div>'+
+        '</div>'+
+        '<button class="li-del" style="margin-left:4px" onclick="toggleRotina(\''+r.id+'\')">'+( r.done?'↩':'✓')+'</button>'+
+        '<button class="li-del" onclick="delRotina(\''+r.id+'\')">✕</button>';
+      div.querySelector('.rot-name').parentElement.parentElement.onclick = function(){ toggleRotina(r.id); };
+      list.appendChild(div);
+    });
+  }
+  list.appendChild(form);
+}
+
+function updateStats(){
+  var total = S.tarefas.length;
+  var done = S.tarefas.filter(function(t){ return t.done; }).length;
+  var pend = total - done;
+  var pct = total > 0 ? Math.round((done/total)*100) : 0;
+  document.getElementById('progBar').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+'%';
+  document.getElementById('heroProgPct').textContent = pct+'%';
+  document.getElementById('heroProgSub').textContent = done+' de '+total+' tarefas';
+  document.getElementById('progSubTxt').textContent = total ? done+' de '+total+' concluídas' : 'Nenhuma tarefa ainda';
+  document.getElementById('resPend').textContent = pend;
+  document.getElementById('pstatPct').textContent = pct+'%';
+  document.getElementById('pstatTarefas').textContent = done;
+  document.getElementById('pstatContas').textContent = S.contas.length;
+
+  var contasPend = S.contas.filter(function(c){ return !c.pago; }).length;
+  document.getElementById('resContas').textContent = contasPend;
+
+  var rotDone = S.rotina.filter(function(r){ return r.done; }).length;
+  var rotTotal = S.rotina.length;
+  var rotPct = rotTotal > 0 ? Math.round((rotDone/rotTotal)*100) : 0;
+  document.getElementById('rotPct').textContent = rotPct+'%';
+  document.getElementById('heroRotina').textContent = rotDone+'/'+rotTotal;
+}
+
+// ============ ACTIONS ============
+function toggleTarefa(id){
+  S.tarefas.forEach(function(t){ if(t.id==id){ t.done=!t.done; if(t.done) showToast('Feito! ✓'); } });
+  save(); renderTarefas(); updateStats(); generateIA();
+}
+function delTarefa(id){
+  S.tarefas = S.tarefas.filter(function(t){ return t.id!=id; });
+  save(); renderTarefas(); updateStats(); generateIA();
+}
+function addTarefa(){
+  var inp = document.getElementById('inpTarefa');
+  var txt = inp.value.trim();
+  if(!txt){ showToast('Digite o nome da tarefa'); return; }
+  S.tarefas.push({id: Date.now(), texto: txt, done: false});
+  inp.value = '';
+  save(); renderTarefas(); updateStats(); generateIA();
+  showToast('Tarefa adicionada ✓');
+}
+
+function addConta(){
+  var nome = document.getElementById('contaNome').value.trim();
+  var valor = parseFloat(document.getElementById('contaValor').value)||0;
+  var venc = document.getElementById('contaVenc').value.trim();
+  if(!nome){ showToast('Digite o nome da conta'); return; }
+  S.contas.push({id: Date.now(), nome: nome, valor: valor, venc: venc, pago: false});
+  document.getElementById('contaNome').value = '';
+  document.getElementById('contaValor').value = '';
+  document.getElementById('contaVenc').value = '';
+  save(); renderContas(); updateStats(); generateIA(); closeModalConta();
+  showToast('Conta adicionada ✓');
+}
+function toggleConta(id){
+  S.contas.forEach(function(c){ if(c.id==id){ c.pago=!c.pago; } });
+  save(); renderContas(); updateStats();
+}
+function delConta(id){
+  S.contas = S.contas.filter(function(c){ return c.id!=id; });
+  save(); renderContas(); updateStats(); generateIA();
+}
+
+function addRotinaItem(){
+  var inp = document.getElementById('inpRotina');
+  var txt = inp.value.trim();
+  if(!txt){ showToast('Digite o item da rotina'); return; }
+  // try to extract hour
+  var hora = '';
+  var match = txt.match(/(\d{1,2}[:h]\d{0,2})/);
+  if(match){ hora = match[1]; txt = txt.replace(match[0],'').trim(); }
+  S.rotina.push({id: Date.now(), texto: txt, hora: hora, done: false});
+  inp.value = '';
+  save(); renderRotina(); updateStats(); generateIA();
+  showToast('Adicionado à rotina ✓');
+}
+function toggleRotina(id){
+  S.rotina.forEach(function(r){ if(r.id==id){ r.done=!r.done; } });
+  save(); renderRotina(); updateStats();
+}
+function delRotina(id){
+  S.rotina = S.rotina.filter(function(r){ return r.id!=id; });
+  save(); renderRotina(); updateStats();
+}
+
+// ============ IA RULES ============
+function generateIA(){
+  var u = S.user;
+  var sugestoes = [];
+
+  // financeiro
+  if(u.renda > 0 && u.aluguel > 0){
+    var pct = Math.round((u.aluguel/u.renda)*100);
+    if(pct > 50){
+      sugestoes.push('Sua moradia compromete '+pct+'% da renda — acima do ideal (30%). Tente reduzir outras despesas fixas.');
+    } else if(pct > 30){
+      sugestoes.push('Moradia em '+pct+'% da renda. Está ok, mas fique de olho nos gastos variáveis.');
+    } else {
+      sugestoes.push('Boa saúde financeira! Moradia em apenas '+pct+'% da renda. Ótimo momento pra criar uma reserva.');
     }
-};
+  }
 
-// 3. GAMIFICATION & LOGIC
-const Logic = {
-    curStep: 0,
-
-    init() {
-        if (Storage.load() && state.onboardingComplete) {
-            UI.showApp();
-        } else {
-            document.getElementById('splash').style.display = 'flex';
-            setTimeout(() => {
-                document.getElementById('splash').style.opacity = '0';
-                setTimeout(() => document.getElementById('splash').style.display = 'none', 500);
-            }, 1500);
-        }
-        this.bindChips();
-    },
-
-    bindChips() {
-        document.querySelectorAll('.chip').forEach(c => {
-            c.onclick = () => c.classList.toggle('on');
-        });
-    },
-
-    obNext() {
-        if (this.curStep === 0) this.goStep(1);
-        else if (this.curStep === 1) {
-            state.user.nome = document.getElementById('inpNome').value;
-            if (!state.user.nome) return UI.toast("Diga seu nome!");
-            this.goStep(2);
-        }
-        else if (this.curStep === 2) {
-            state.user.renda = parseFloat(document.getElementById('inpRenda').value) || 0;
-            state.user.saldo = parseFloat(document.getElementById('inpSaldo').value) || 0;
-            state.user.aluguel = parseFloat(document.getElementById('inpAluguel').value) || 0;
-            state.expenses[0].value = state.user.aluguel;
-            this.goStep(3);
-        }
-        else if (this.curStep === 3) {
-            this.finishOb();
-        }
-    },
-
-    goStep(n) {
-        document.getElementById(`step${this.curStep}`).classList.add('out');
-        document.getElementById(`step${this.curStep}`).classList.remove('active');
-        this.curStep = n;
-        document.getElementById(`step${this.curStep}`).classList.add('active');
-        
-        document.querySelectorAll('.pdot').forEach((d, i) => {
-            d.className = i === n ? 'pdot on' : 'pdot';
-        });
-        
-        document.getElementById('btnOb').textContent = n === 3 ? "Começar Vida Nova 🚀" : "Continuar";
-    },
-
-    finishOb() {
-        // Checar chips selecionados
-        const itemsOn = document.querySelectorAll('#obItems .chip.on');
-        itemsOn.forEach(chip => {
-            const itemName = chip.getAttribute('data-item');
-            const task = state.tasks.find(t => t.text.includes(itemName));
-            if (task) task.done = true;
-        });
-
-        state.onboardingComplete = true;
-        this.calculateProgress();
-        Storage.save();
-        UI.showApp();
-    },
-
-    calculateProgress() {
-        const done = state.tasks.filter(t => t.done).length;
-        const total = state.tasks.length;
-        const pct = Math.round((done / total) * 100);
-        
-        // XP Calculation
-        let currentXP = state.tasks.filter(t => t.done).reduce((acc, t) => acc + t.xp, 0);
-        state.xp = currentXP;
-
-        // Level Logic
-        let newLvl = 1;
-        let newTitle = levels[0].title;
-        levels.forEach(l => {
-            if (currentXP >= l.min) {
-                newLvl = l.lvl;
-                newTitle = l.title;
-            }
-        });
-
-        if (newLvl > state.level) UI.toast(`Level Up! Agora você é ${newTitle} 🎊`);
-        
-        state.level = newLvl;
-        state.title = newTitle;
-        
-        UI.updateHome(pct, done, total);
-        this.runAI();
-    },
-
-    toggleTask(id) {
-        const task = state.tasks.find(t => t.id === id);
-        task.done = !task.done;
-        if (task.done) UI.toast(`+${task.xp} XP!`);
-        this.calculateProgress();
-        Storage.save();
-        UI.refreshLists();
-    },
-
-    addExpense() {
-        const desc = prompt("Nome da conta:");
-        const val = parseFloat(prompt("Valor R$:"));
-        if (desc && val) {
-            state.expenses.push({ id: Date.now(), title: desc, value: val, paid: false });
-            Storage.save();
-            UI.refreshLists();
-            UI.toast("Conta adicionada!");
-        }
-    },
-
-    runAI() {
-        const ai = document.getElementById('aiSuggestion');
-        const renda = state.user.renda;
-        const aluguel = state.user.aluguel;
-        const internet = state.tasks.find(t => t.text.includes("Internet")).done;
-        
-        if (aluguel > (renda * 0.5)) {
-            ai.innerText = "Cuidado! Seu aluguel compromete mais de 50% da sua renda. Tente economizar em lazer este mês.";
-        } else if (!internet) {
-            ai.innerText = "Dica: Ter internet instalada deve ser sua prioridade nº 1 para conseguir gerenciar o resto.";
-        } else if (state.xp > 1000) {
-            ai.innerText = "Você está mandando muito bem! Que tal planejar um pequeno jantar para inaugurar o apê?";
-        } else {
-            ai.innerText = "Próximo passo sugerido: Foque em concluir as missões de eletrodomésticos básicos.";
-        }
-    },
-
-    demoMode() {
-        state.user = { nome: "Visitante", cidade: "São Paulo", renda: 4500, saldo: 1200, aluguel: 1800 };
-        state.tasks[0].done = true;
-        state.tasks[1].done = true;
-        state.onboardingComplete = true;
-        this.finishOb();
-    },
-
-    reset() {
-        if(confirm("Deseja resetar todos os dados?")) {
-            localStorage.clear();
-            location.reload();
-        }
+  if(u.renda > 0 && u.saldo > 0){
+    var meses = Math.floor(u.saldo / (u.renda * 0.3));
+    if(meses < 3){
+      sugestoes.push('Sua reserva de emergência cobre menos de 3 meses. Tente guardar pelo menos '+fmtBRL(u.renda*3)+' como segurança.');
     }
-};
+  }
 
-// 4. UI ENGINE
-const UI = {
-    showApp() {
-        document.getElementById('ob').style.display = 'none';
-        document.getElementById('app').classList.add('show');
-        this.refreshLists();
-        this.updateProfile();
-    },
+  var contasPend = S.contas.filter(function(c){ return !c.pago; });
+  if(contasPend.length > 0){
+    var total = contasPend.reduce(function(s,c){ return s+(parseFloat(c.valor)||0); },0);
+    sugestoes.push(contasPend.length+' conta(s) pendente(s) totalizando '+fmtBRL(total)+'. Fique atento aos vencimentos.');
+  }
 
-    switchTab(name) {
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
-        document.getElementById(`panel-${name}`).classList.add('on');
-        
-        document.querySelectorAll('.tab, .nb-item').forEach(t => t.classList.remove('on'));
-        // Sincronizar tab e navbar
-        event.currentTarget.classList.add('on');
-        
-        document.getElementById('mainContent').scrollTop = 0;
-    },
+  // tarefas
+  var pend = S.tarefas.filter(function(t){ return !t.done; });
+  if(pend.length > 5){
+    sugestoes.push('Você tem '+pend.length+' tarefas pendentes. Que tal focar nas 3 mais importantes esta semana?');
+  } else if(pend.length === 0 && S.tarefas.length > 0){
+    sugestoes.push('Todas as tarefas concluídas! 🎉 Hora de adicionar os próximos objetivos do apê.');
+  }
 
-    updateHome(pct, done, total) {
-        document.getElementById('heroName').innerHTML = `${state.user.nome} <span>👋</span>`;
-        document.getElementById('greetSub').innerText = `Bem-vindo ao seu apê!`;
-        document.getElementById('valSaldo').innerText = `R$ ${state.user.saldo.toLocaleString()}`;
-        document.getElementById('valLevel').innerText = state.level;
-        document.getElementById('userTitle').innerText = state.title;
-        
-        document.getElementById('progPct').innerText = `${pct}%`;
-        document.getElementById('progFill').style.width = `${pct}%`;
-        document.getElementById('progSub').innerText = `${done} de ${total} missões`;
-        
-        const nextLvl = levels.find(l => l.lvl === state.level + 1) || {min: state.xp};
-        document.getElementById('valXPLabel').innerText = `${state.xp} / ${nextLvl.min} XP`;
-        
-        document.getElementById('avatarBtn').innerText = state.user.nome.charAt(0).toUpperCase();
-        
-        this.refreshLists();
-    },
+  // rotina
+  if(S.rotina.length === 0){
+    sugestoes.push('Montar uma rotina ajuda muito na vida adulta. Que tal começar com 3 hábitos simples?');
+  } else {
+    var semSono = !S.rotina.some(function(r){ return /dorm|sono|sleep|22|23|00h/i.test(r.texto+r.hora); });
+    if(semSono) sugestoes.push('Sua rotina não tem horário de dormir. Qualidade do sono afeta tudo — considere adicionar!');
+  }
 
-    updateProfile() {
-        document.getElementById('perfName').innerText = state.user.nome;
-        document.getElementById('perfTitle').innerText = state.title;
-        document.getElementById('perfAv').innerText = state.user.nome.charAt(0).toUpperCase();
-        document.getElementById('finRenda').innerText = `R$ ${state.user.renda}`;
-        document.getElementById('finAluguel').innerText = `R$ ${state.user.aluguel}`;
-    },
+  // geral
+  if(!sugestoes.length){
+    sugestoes.push('Tudo parece bem por aqui! Continue atualizando seus dados para receber sugestões melhores.');
+  }
 
-    refreshLists() {
-        // Home Task List (only 3 pending)
-        const homeList = document.getElementById('homeTaskList');
-        homeList.innerHTML = "";
-        state.tasks.filter(t => !t.done).slice(0, 3).forEach(t => {
-            homeList.innerHTML += this.renderTask(t);
-        });
+  // render
+  var cont = document.getElementById('iaSugestoes');
+  cont.innerHTML = '';
+  sugestoes.slice(0,3).forEach(function(s){
+    var div = document.createElement('div');
+    div.className = 'ia-item';
+    div.innerHTML = '<div class="ia-dot"></div><div class="ia-text">'+s+'</div>';
+    cont.appendChild(div);
+  });
+}
 
-        // Full Task List
-        const fullList = document.getElementById('fullTaskList');
-        if (fullList) {
-            fullList.innerHTML = "";
-            state.tasks.forEach(t => fullList.innerHTML += this.renderTask(t));
-        }
+// ============ TABS ============
+function switchTab(name, tabEl){
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
+  document.getElementById('panel-'+name).classList.add('on');
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
+  if(tabEl) tabEl.classList.add('on');
+  else {
+    document.querySelectorAll('.tab').forEach(function(t){
+      if(t.getAttribute('onclick') && t.getAttribute('onclick').indexOf("'"+name+"'")>-1) t.classList.add('on');
+    });
+  }
+  setNb(name);
+  document.getElementById('mainContent').scrollTop = 0;
+}
+function setNb(name){
+  document.querySelectorAll('.nb').forEach(function(n){ n.classList.remove('on'); });
+  var nb = document.getElementById('nb-'+name);
+  if(nb) nb.classList.add('on');
+}
 
-        // Expense List
-        const expList = document.getElementById('expenseList');
-        expList.innerHTML = "";
-        state.expenses.forEach(e => {
-            expList.innerHTML += `
-                <div class="list-item">
-                    <div class="li-text">${e.title}</div>
-                    <div class="li-tag tag-pend">R$ ${e.value}</div>
-                </div>
-            `;
-        });
-    },
+// ============ MODALS ============
+function openModal(){ document.getElementById('modal').classList.add('show'); }
+function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+function openModalConta(){ document.getElementById('modalConta').classList.add('show'); }
+function closeModalConta(){ document.getElementById('modalConta').classList.remove('show'); }
 
-    renderTask(t) {
-        return `
-            <div class="list-item" onclick="Logic.toggleTask(${t.id})">
-                <div class="li-dot" style="background:${t.done ? '#7DD4A0' : '#F5C842'}"></div>
-                <div class="li-text ${t.done ? 'done' : ''}">${t.text}</div>
-                <div class="li-tag ${t.done ? 'tag-ok' : 'tag-pend'}">${t.done ? 'Feito' : '+'+t.xp+' XP'}</div>
-            </div>
-        `;
-    },
+function toggleAddForm(id){
+  var f = document.getElementById(id);
+  if(f) f.classList.toggle('show');
+}
 
-    toast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2500);
-    }
-};
+// ============ EXPORT / RESET ============
+function exportData(){
+  var json = JSON.stringify(S, null, 2);
+  var blob = new Blob([json], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'meu-ape-dados.json'; a.click();
+  URL.revokeObjectURL(url);
+  closeModal();
+  showToast('Dados exportados ✓');
+}
+function resetData(){
+  if(!confirm('Tem certeza? Todos os dados serão apagados.')) return;
+  localStorage.removeItem('ape_data');
+  location.reload();
+}
 
-// INIT APP
-window.onload = () => Logic.init();
-
+// ============ UTILS ============
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showToast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+}
 </script>
-</body>
-</html>
+</HTMLEOF
+echo "done"

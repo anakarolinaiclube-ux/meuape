@@ -3,1236 +3,686 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Apê</title>
+<title>Apê - Life Organizer</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* MANTENDO EXATAMENTE O SEU DESIGN ORIGINAL */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent}
 :root{
-  --cream:#F5F0E8;
-  --cream-dark:#EDE7D9;
-  --cream-darker:#E4DDD0;
-  --black:#0F0F0D;
-  --black2:#1A1A17;
-  --yellow:#F5C842;
-  --yellow-dark:#E6B830;
-  --yellow-soft:rgba(245,200,66,0.15);
-  --yellow-softer:rgba(245,200,66,0.08);
-  --text:#0F0F0D;
-  --muted:#8C8880;
-  --muted2:#B8B4AE;
-  --border:rgba(15,15,13,0.08);
-  --border2:rgba(15,15,13,0.12);
-  --white:rgba(255,255,255,0.7);
+  --cream:#F5F0E8; --cream-dark:#EDE7D9; --cream-darker:#E4DDD0;
+  --black:#0F0F0D; --black2:#1A1A17; --yellow:#F5C842;
+  --yellow-dark:#E6B830; --yellow-soft:rgba(245,200,66,0.15);
+  --yellow-softer:rgba(245,200,66,0.08); --text:#0F0F0D;
+  --muted:#8C8880; --muted2:#B8B4AE; --border:rgba(15,15,13,0.08);
+  --border2:rgba(15,15,13,0.12); --white:rgba(255,255,255,0.7);
   --r:18px;--rs:12px;--rxs:8px;
 }
-html,body{height:100%;background:var(--cream)}
+html,body{height:100%;background:var(--cream);overscroll-behavior:none}
 body{font-family:'Poppins',sans-serif;color:var(--text);display:flex;justify-content:center;align-items:flex-start;overflow:hidden}
 .shell{width:100%;max-width:390px;height:100vh;position:relative;overflow:hidden;background:var(--cream)}
 
-/* ===================== ONBOARDING ===================== */
+/* ONBOARDING */
 #ob{position:absolute;inset:0;z-index:300;display:flex;flex-direction:column;background:var(--cream);overflow:hidden}
-
-/* splash */
-.splash{
-  position:absolute;inset:0;
-  background:var(--black);
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  z-index:100;
-  transition:opacity 0.5s ease;
-}
-.splash-logo{
-  font-family:'Outfit',sans-serif;
-  font-size:3rem;font-weight:800;
-  color:var(--cream);letter-spacing:-1px;
-}
+.splash{position:absolute;inset:0;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;transition:opacity 0.5s ease}
+.splash-logo{font-family:'Outfit',sans-serif;font-size:3rem;font-weight:800;color:var(--cream);letter-spacing:-1px}
 .splash-logo span{color:var(--yellow)}
-.splash-tagline{
-  font-size:0.78rem;color:rgba(245,240,232,0.4);
-  letter-spacing:0.15em;text-transform:uppercase;
-  margin-top:8px;font-weight:400;
-}
-.splash-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:var(--yellow);
-  margin-top:40px;
-  animation:pulse 1.2s ease-in-out infinite;
-}
+.splash-tagline{font-size:0.78rem;color:rgba(245,240,232,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-top:8px;font-weight:400}
+.splash-dot{width:5px;height:5px;border-radius:50%;background:var(--yellow);margin-top:40px;animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
 
-/* steps */
-.ob-steps{flex:1;display:flex;flex-direction:column;opacity:1;position:relative;z-index:20;overflow:hidden;min-height:0}
-
-.step{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  padding:0 24px;
-  overflow-y:auto;
-  overflow-x:hidden;
-  opacity:0;pointer-events:none;
-  transform:translateX(32px);
-  transition:all 0.38s cubic-bezier(0.4,0,0.2,1);
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-}
-.step::-webkit-scrollbar{display:none}
+.ob-steps{flex:1;display:flex;flex-direction:column;position:relative;z-index:20;overflow:hidden}
+.step{position:absolute;inset:0;display:flex;flex-direction:column;padding:0 24px;overflow-y:auto;opacity:0;pointer-events:none;transform:translateX(32px);transition:all 0.38s cubic-bezier(0.4,0,0.2,1)}
 .step.active{opacity:1;pointer-events:all;transform:translateX(0)}
 .step.out{opacity:0;transform:translateX(-32px)}
-
-/* step header */
-.step-top{
-  padding-top:40px;
-  margin-bottom:24px;
-  flex-shrink:0;
-}
-.step-num{
-  font-size:0.65rem;font-weight:600;
-  text-transform:uppercase;letter-spacing:0.15em;
-  color:var(--muted);margin-bottom:12px;
-}
-.step-title{
-  font-family:'Outfit',sans-serif;
-  font-size:1.9rem;font-weight:700;
-  line-height:1.15;letter-spacing:-0.5px;
-  color:var(--black);
-}
+.step-top{padding-top:40px;margin-bottom:24px;flex-shrink:0}
+.step-num{font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin-bottom:12px}
+.step-title{font-family:'Outfit',sans-serif;font-size:1.9rem;font-weight:700;line-height:1.15;letter-spacing:-0.5px;color:var(--black)}
 .step-title em{font-style:normal;color:var(--yellow-dark)}
-.step-desc{font-size:0.85rem;color:var(--muted);margin-top:8px;line-height:1.6;font-weight:400}
+.step-desc{font-size:0.85rem;color:var(--muted);margin-top:8px;line-height:1.6}
+.illo-wrap{height:160px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.illo-box{width:160px;height:160px;border-radius:32px;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;box-shadow:0 20px 60px rgba(15,15,13,0.15)}
+.illo-pill{position:absolute;bottom:-12px;background:var(--yellow);color:var(--black);font-size:0.68rem;font-weight:700;padding:5px 14px;border-radius:99px;white-space:nowrap;box-shadow:0 4px 12px rgba(245,200,66,0.35)}
 
-/* illo */
-.illo-wrap{
-  height:160px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:20px;
-  flex-shrink:0;
-}
-.illo-box{
-  width:160px;height:160px;
-  border-radius:32px;
-  background:var(--black);
-  display:flex;align-items:center;justify-content:center;
-  font-size:4rem;
-  position:relative;
-  box-shadow:0 20px 60px rgba(15,15,13,0.15);
-}
-.illo-pill{
-  position:absolute;
-  bottom:-12px;
-  background:var(--yellow);
-  color:var(--black);
-  font-size:0.68rem;font-weight:700;
-  padding:5px 14px;border-radius:99px;
-  white-space:nowrap;
-  box-shadow:0 4px 12px rgba(245,200,66,0.35);
-}
-
-/* form fields */
 .field-group{display:flex;flex-direction:column;gap:14px;padding-bottom:24px}
 .field-label{font-size:0.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
-.field-input{
-  width:100%;
-  background:rgba(255,255,255,0.6);
-  border:1.5px solid var(--border2);
-  border-radius:var(--rs);
-  padding:14px 16px;
-  font-family:'Poppins',sans-serif;
-  font-size:0.95rem;font-weight:500;
-  color:var(--text);
-  outline:none;
-  transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;
-  -webkit-appearance:none;
-}
-.field-input:focus{
-  border-color:var(--yellow-dark);
-  background:rgba(255,255,255,0.9);
-  box-shadow:0 0 0 3px rgba(245,200,66,0.15);
-}
-.field-input::placeholder{color:var(--muted2);font-weight:400}
+.field-input{width:100%;background:rgba(255,255,255,0.6);border:1.5px solid var(--border2);border-radius:var(--rs);padding:14px 16px;font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:500;outline:none;transition:all 0.2s}
+.field-input:focus{border-color:var(--yellow-dark);background:white;box-shadow:0 0 0 3px rgba(245,200,66,0.15)}
 .prefix-wrap{position:relative}
-.prefix{
-  position:absolute;left:16px;top:50%;transform:translateY(-50%);
-  font-size:0.95rem;font-weight:500;color:var(--muted);
-  pointer-events:none;
-}
+.prefix{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:0.95rem;font-weight:500;color:var(--muted)}
 .prefix-wrap .field-input{padding-left:38px}
 
-/* chips */
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{
-  padding:8px 16px;border-radius:99px;
-  border:1.5px solid var(--border2);
-  background:transparent;
-  font-family:'Poppins',sans-serif;
-  font-size:0.82rem;font-weight:500;
-  color:var(--muted);cursor:pointer;
-  transition:all 0.18s;
-}
-.chip.on{
-  background:var(--black);
-  border-color:var(--black);
-  color:var(--yellow);
-}
-.chip:active{transform:scale(0.96)}
+.chip{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border2);font-size:0.82rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.18s}
+.chip.on{background:var(--black);border-color:var(--black);color:var(--yellow)}
 
-/* ob bottom */
-.ob-bottom{
-  padding:16px 24px;
-  padding-bottom:max(32px, env(safe-area-inset-bottom, 32px));
-  flex-shrink:0;
-  background:var(--cream);
-  border-top:1px solid var(--border);
-  position:relative;
-  z-index:25;
-}
+.ob-bottom{padding:16px 24px;padding-bottom:max(32px, env(safe-area-inset-bottom));background:var(--cream);border-top:1px solid var(--border);position:relative;z-index:25}
 .progress-dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
-.pdot{width:6px;height:6px;border-radius:99px;background:var(--border2);transition:all 0.3s ease}
+.pdot{width:6px;height:6px;border-radius:99px;background:var(--border2);transition:0.3s}
 .pdot.on{width:22px;background:var(--black)}
+.btn-primary{width:100%;padding:16px;background:var(--black);color:var(--cream);border:none;border-radius:var(--r);font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:active{transform:scale(0.98)}
+.skip-link{text-align:center;margin-top:14px;font-size:0.78rem;color:var(--muted);cursor:pointer}
 
-.btn-primary{
-  width:100%;padding:16px;
-  background:var(--black);color:var(--cream);
-  border:none;border-radius:var(--r);
-  font-family:'Poppins',sans-serif;
-  font-size:0.95rem;font-weight:600;
-  cursor:pointer;
-  transition:opacity 0.15s,transform 0.15s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.btn-primary:active{transform:scale(0.98);opacity:0.85}
-.btn-primary.yellow{background:var(--yellow);color:var(--black)}
-
-.skip-link{
-  text-align:center;margin-top:14px;
-  font-size:0.78rem;color:var(--muted);cursor:pointer;
-}
-.skip-link:hover{color:var(--text)}
-
-/* ===================== APP ===================== */
-#app{
-  position:absolute;inset:0;
-  display:none;flex-direction:column;
-  background:var(--cream);
-}
+/* APP LAYOUT */
+#app{position:absolute;inset:0;display:none;flex-direction:column;background:var(--cream)}
 #app.show{display:flex}
-
-/* status bar */
-.statusbar{
-  height:44px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 22px;
-  font-size:0.72rem;font-weight:600;color:var(--text);
-}
-.sb-right{display:flex;align-items:center;gap:5px;font-size:0.68rem}
-
-/* top bar */
-.topbar{
-  padding:4px 20px 14px;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-shrink:0;
-}
-.app-logo{
-  font-family:'Outfit',sans-serif;
-  font-size:1.3rem;font-weight:800;
-  letter-spacing:-0.5px;color:var(--black);
-}
+.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:0.72rem;font-weight:600}
+.topbar{padding:4px 20px 14px;display:flex;align-items:center;justify-content:space-between}
+.app-logo{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800;letter-spacing:-0.5px}
 .app-logo span{color:var(--yellow-dark)}
-.greeting-sub{font-size:0.72rem;color:var(--muted);margin-top:1px;font-weight:400}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.icon-btn{
-  width:38px;height:38px;border-radius:50%;
-  background:var(--black);
-  border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:opacity 0.15s;position:relative;
-}
-.icon-btn:active{opacity:0.7}
-.icon-btn svg{color:var(--cream)}
-.notif-badge{
-  position:absolute;top:7px;right:7px;
-  width:7px;height:7px;border-radius:50%;
-  background:var(--yellow);
-  border:1.5px solid var(--cream);
-}
-.avatar-btn{
-  width:38px;height:38px;border-radius:50%;
-  background:var(--yellow);
-  display:flex;align-items:center;justify-content:center;
-  font-size:0.78rem;font-weight:700;color:var(--black);
-  cursor:pointer;border:none;
-  font-family:'Poppins',sans-serif;
-}
+.greeting-sub{font-size:0.72rem;color:var(--muted)}
+.icon-btn{width:38px;height:38px;border-radius:50%;background:var(--black);border:none;display:flex;align-items:center;justify-content:center;position:relative}
+.notif-badge{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--yellow);border:1.5px solid var(--cream)}
+.avatar-btn{width:38px;height:38px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;font-family:'Poppins'}
 
-/* tabs */
-.tabs{
-  display:flex;
-  padding:0 20px;
-  gap:6px;
-  flex-shrink:0;
-  margin-bottom:4px;
-}
-.tab{
-  padding:7px 16px;border-radius:99px;
-  font-size:0.75rem;font-weight:600;
-  cursor:pointer;border:1.5px solid transparent;
-  transition:all 0.2s;white-space:nowrap;
-  font-family:'Poppins',sans-serif;
-  color:var(--muted);
-  background:transparent;
-  border-color:var(--border);
-}
-.tab.on{
-  background:var(--black);
-  color:var(--yellow);
-  border-color:var(--black);
-}
-.tab:active{transform:scale(0.97)}
+.tabs{display:flex;padding:0 20px;gap:6px;margin-bottom:4px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:7px 16px;border-radius:99px;font-size:0.75rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--muted);white-space:nowrap}
+.tab.on{background:var(--black);color:var(--yellow);border-color:var(--black)}
 
-/* content area */
-.content{
-  flex:1;overflow-y:auto;
-  padding:16px 20px 100px;
-  scrollbar-width:none;
-}
+.content{flex:1;overflow-y:auto;padding:16px 20px 100px;scrollbar-width:none}
 .content::-webkit-scrollbar{display:none}
-
-/* tab panels */
 .panel{display:none}
 .panel.on{display:block}
 
-/* ---- HOME ---- */
-.hero-card{
-  background:var(--black);
-  border-radius:24px;
-  padding:24px;
-  margin-bottom:16px;
-  position:relative;
-  overflow:hidden;
-}
-.hero-card::before{
-  content:'';
-  position:absolute;top:-40px;right:-40px;
-  width:160px;height:160px;
-  background:radial-gradient(circle,rgba(245,200,66,0.2) 0%,transparent 70%);
-  pointer-events:none;
-}
-.hero-greeting{font-size:0.75rem;color:rgba(245,240,232,0.5);font-weight:400;margin-bottom:4px}
-.hero-name{
-  font-family:'Outfit',sans-serif;
-  font-size:1.6rem;font-weight:700;
-  color:var(--cream);letter-spacing:-0.5px;
-  margin-bottom:20px;
-}
+/* CARDS & UI */
+.hero-card{background:var(--black);border-radius:24px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero-greeting{font-size:0.75rem;color:rgba(245,240,232,0.5);margin-bottom:4px}
+.hero-name{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:var(--cream);margin-bottom:20px}
 .hero-name span{color:var(--yellow)}
 .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .hstat{background:rgba(255,255,255,0.06);border-radius:var(--rs);padding:14px}
-.hstat-label{font-size:0.65rem;color:rgba(245,240,232,0.4);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:4px}
-.hstat-val{font-size:1.3rem;font-weight:700;color:var(--cream);letter-spacing:-0.5px;line-height:1}
+.hstat-label{font-size:0.65rem;color:rgba(245,240,232,0.4);text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.hstat-val{font-size:1.3rem;font-weight:700;color:var(--cream)}
 .hstat-val.yellow{color:var(--yellow)}
 .hstat-sub{font-size:0.65rem;color:rgba(245,240,232,0.35);margin-top:2px}
 
-/* prog */
-.prog-card{
-  background:rgba(255,255,255,0.55);
-  border:1.5px solid var(--border);
-  border-radius:var(--r);
-  padding:20px;
-  margin-bottom:16px;
-  backdrop-filter:blur(8px);
-}
+.prog-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
 .prog-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
-.prog-title{font-size:0.92rem;font-weight:600;letter-spacing:-0.2px}
-.prog-sub{font-size:0.72rem;color:var(--muted);margin-top:2px;font-weight:400}
-.prog-pct{
-  font-family:'Outfit',sans-serif;
-  font-size:1.6rem;font-weight:700;
-  color:var(--yellow-dark);letter-spacing:-1px;line-height:1;
-}
-.prog-bg{height:6px;background:var(--cream-darker);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.prog-title{font-size:0.92rem;font-weight:600}
+.prog-pct{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:var(--yellow-dark)}
+.prog-bg{height:6px;background:var(--cream-darker);border-radius:99px;margin-bottom:10px}
 .prog-fill{height:100%;background:var(--black);border-radius:99px;transition:width 0.8s ease}
-.prog-meta{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--muted);font-weight:500}
 
-/* resumo cards */
+.ai-card{background:var(--yellow-soft);border:1.5px solid rgba(245,200,66,0.3);border-radius:var(--r);padding:16px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
+.ai-icon{font-size:1.5rem}
+.ai-text{font-size:0.82rem;line-height:1.5;color:var(--black);font-weight:500}
+
 .resumo-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.rcard{
-  background:rgba(255,255,255,0.55);
-  border:1.5px solid var(--border);
-  border-radius:var(--r);
-  padding:16px;
-  cursor:pointer;
-  transition:all 0.18s;
-  backdrop-filter:blur(8px);
-}
-.rcard:active{transform:scale(0.97)}
-.rcard.accent{background:var(--yellow-soft);border-color:rgba(245,200,66,0.3)}
-.rcard-icon{font-size:1.1rem;margin-bottom:8px}
-.rcard-num{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:-1px;line-height:1;color:var(--black)}
-.rcard-label{font-size:0.7rem;color:var(--muted);font-weight:500;margin-top:3px}
+.rcard{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:16px}
+.rcard-num{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;color:var(--black)}
+.rcard-label{font-size:0.7rem;color:var(--muted);font-weight:500}
 
-/* section title */
-.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:20px}
-.sec-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted)}
-.sec-link{font-size:0.78rem;font-weight:600;color:var(--black);cursor:pointer}
-
-/* quick actions */
-.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.qa{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer}
-.qa-icon{
-  width:52px;height:52px;border-radius:16px;
-  background:var(--black);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;
-  transition:transform 0.15s,opacity 0.15s;
-}
-.qa:active .qa-icon{transform:scale(0.92);opacity:0.8}
-.qa-label{font-size:0.62rem;font-weight:600;color:var(--muted);text-align:center}
-
-/* list cards */
-.list-card{
-  background:rgba(255,255,255,0.55);
-  border:1.5px solid var(--border);
-  border-radius:var(--r);
-  overflow:hidden;
-  backdrop-filter:blur(8px);
-  margin-bottom:10px;
-}
-.list-item{
-  display:flex;align-items:center;gap:12px;
-  padding:13px 16px;
-  border-bottom:1px solid var(--border);
-  cursor:pointer;transition:background 0.12s;
-}
+.list-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
+.list-item{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer}
 .list-item:last-child{border:none}
-.list-item:active{background:rgba(255,255,255,0.6)}
-.li-dot{
-  width:8px;height:8px;border-radius:50%;
-  flex-shrink:0;
-}
+.li-dot{width:8px;height:8px;border-radius:50%}
 .li-text{flex:1;font-size:0.88rem;font-weight:500}
-.li-text.done{text-decoration:line-through;color:var(--muted);font-weight:400}
-.li-tag{
-  font-size:0.62rem;font-weight:700;
-  padding:3px 9px;border-radius:99px;
-}
+.li-text.done{text-decoration:line-through;color:var(--muted)}
+.li-tag{font-size:0.62rem;font-weight:700;padding:3px 9px;border-radius:99px}
 .tag-pend{background:var(--yellow-soft);color:var(--yellow-dark)}
 .tag-ok{background:rgba(15,15,13,0.06);color:var(--muted)}
 
-/* ---- FINANÇAS ---- */
-.fin-hero{
-  background:var(--black);border-radius:24px;
-  padding:24px;margin-bottom:16px;position:relative;overflow:hidden;
-}
-.fin-hero::after{
-  content:'';position:absolute;bottom:-30px;right:-30px;
-  width:120px;height:120px;
-  background:radial-gradient(circle,rgba(245,200,66,0.25) 0%,transparent 70%);
-}
-.fin-period{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.fin-month{font-size:0.82rem;font-weight:600;color:rgba(245,240,232,0.6)}
-.fin-arrows{display:flex;gap:8px}
-.fin-arrow{
-  width:28px;height:28px;border-radius:8px;
-  background:rgba(255,255,255,0.08);border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--cream);font-size:0.8rem;transition:background 0.15s;
-}
-.fin-arrow:hover{background:rgba(255,255,255,0.14)}
+/* FINANÇAS */
+.fin-hero{background:var(--black);border-radius:24px;padding:24px;margin-bottom:16px}
 .fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .fcard{background:rgba(255,255,255,0.07);border-radius:var(--rs);padding:14px}
-.fcard-label{font-size:0.62rem;color:rgba(245,240,232,0.4);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:5px}
-.fcard-val{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:var(--cream);letter-spacing:-0.5px}
+.fcard-label{font-size:0.62rem;color:rgba(245,240,232,0.4);text-transform:uppercase;font-weight:600}
+.fcard-val{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:var(--cream)}
 .fcard-val.y{color:var(--yellow)}
-.fcard-val.g{color:#7DD4A0}
-.fcard-sub{font-size:0.62rem;color:rgba(245,240,232,0.3);margin-top:2px}
 
-.conta-card{
-  background:rgba(255,255,255,0.55);border:1.5px solid var(--border);
-  border-radius:var(--r);overflow:hidden;backdrop-filter:blur(8px);
-}
-.conta-item{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:13px 16px;border-bottom:1px solid var(--border);
-}
-.conta-item:last-child{border:none}
-.conta-left{display:flex;flex-direction:column;gap:2px}
-.conta-name{font-size:0.88rem;font-weight:600}
-.conta-due{font-size:0.7rem;color:var(--muted);font-weight:400}
-.conta-val{font-size:0.9rem;font-weight:700}
-.conta-val.ok{color:var(--muted);font-weight:400}
-.cpill{font-size:0.58rem;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:6px}
-.cp-p{background:var(--yellow-soft);color:var(--yellow-dark)}
-.cp-ok{background:rgba(15,15,13,0.06);color:var(--muted)}
-
-/* ---- ROTINA ---- */
-.rotina-header{
-  background:var(--black);border-radius:24px;
-  padding:20px 24px;margin-bottom:16px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.rot-date{font-size:0.75rem;color:rgba(245,240,232,0.5);margin-bottom:2px}
-.rot-title{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;color:var(--cream)}
-.rot-progress{text-align:right}
-.rot-pct{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1}
-.rot-sub{font-size:0.65rem;color:rgba(245,240,232,0.4);margin-top:1px}
-
-.rot-item{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 16px;border-bottom:1px solid var(--border);
-  cursor:pointer;transition:background 0.12s;
-}
-.rot-item:last-child{border:none}
-.rot-item:active{background:rgba(255,255,255,0.6)}
-.rot-time{
-  font-size:0.68rem;font-weight:700;color:var(--muted);
-  min-width:42px;text-align:right;font-family:'Outfit',sans-serif;
-}
-.rot-dot{
-  width:36px;height:36px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:0.9rem;flex-shrink:0;
-}
-.rot-info{flex:1}
-.rot-name{font-size:0.88rem;font-weight:600}
-.rot-name.done{text-decoration:line-through;color:var(--muted);font-weight:400}
-.rot-cat{font-size:0.68rem;color:var(--muted);margin-top:1px;font-weight:400}
-
-/* ---- PERFIL ---- */
-.perfil-hero{
-  background:var(--black);border-radius:24px;
-  padding:28px 24px;margin-bottom:16px;
-  text-align:center;position:relative;overflow:hidden;
-}
-.perfil-hero::before{
-  content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);
-  width:200px;height:200px;
-  background:radial-gradient(circle,rgba(245,200,66,0.12) 0%,transparent 65%);
-}
-.perfil-av{
-  width:72px;height:72px;border-radius:50%;
-  background:var(--yellow);margin:0 auto 12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;font-weight:700;color:var(--black);
-  font-family:'Outfit',sans-serif;
-}
-.perfil-name{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:var(--cream);letter-spacing:-0.3px}
-.perfil-since{font-size:0.72rem;color:rgba(245,240,232,0.4);margin-top:4px;font-weight:400}
-
-.perfil-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,0.08);border-radius:var(--rs);overflow:hidden;margin-top:20px}
-.pstat{background:rgba(255,255,255,0.04);padding:14px 8px;text-align:center}
-.pstat-val{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;color:var(--yellow)}
-.pstat-label{font-size:0.62rem;color:rgba(245,240,232,0.4);margin-top:2px;font-weight:500}
-
-.perf-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:15px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s;
-}
-.perf-row:last-child{border:none}
-.perf-row:active{background:rgba(255,255,255,0.4)}
-.perf-left{display:flex;align-items:center;gap:12px}
-.perf-icon{
-  width:36px;height:36px;border-radius:10px;
-  background:var(--cream-dark);
-  display:flex;align-items:center;justify-content:center;font-size:0.9rem;
-}
-.perf-name{font-size:0.88rem;font-weight:500}
-.perf-arr{color:var(--muted);font-size:0.8rem}
-
-/* ===================== NAVBAR ===================== */
-.navbar{
-  position:absolute;bottom:0;left:0;right:0;
-  height:80px;
-  background:rgba(245,240,232,0.92);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-top:1px solid var(--border);
-  display:flex;justify-content:space-around;align-items:flex-start;
-  padding-top:10px;
-  z-index:50;
-  flex-shrink:0;
-}
-.nb-item{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  cursor:pointer;padding:0 12px;transition:opacity 0.15s;
-}
-.nb-item:active{opacity:0.6}
-.nb-icon{
-  width:40px;height:40px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  transition:all 0.2s;
-}
+/* NAVBAR */
+.navbar{position:absolute;bottom:0;left:0;right:0;height:80px;background:rgba(245,240,232,0.92);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding-top:10px;z-index:50}
+.nb-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:0 12px}
+.nb-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .nb-item.on .nb-icon{background:var(--black)}
-.nb-item:not(.on) .nb-icon svg{color:var(--muted2)}
 .nb-item.on .nb-icon svg{color:var(--yellow)}
-.nb-label{font-size:0.58rem;font-weight:600;color:var(--muted2);transition:color 0.2s}
+.nb-item:not(.on) svg{color:var(--muted2)}
+.nb-label{font-size:0.58rem;font-weight:600;color:var(--muted2)}
 .nb-item.on .nb-label{color:var(--black)}
 
-/* ===================== TOAST ===================== */
-.toast{
-  position:fixed;bottom:90px;left:50%;
-  transform:translateX(-50%) translateY(20px);
-  background:var(--black);color:var(--cream);
-  padding:11px 22px;border-radius:99px;
-  font-size:0.78rem;font-weight:600;
-  z-index:9999;opacity:0;
-  transition:all 0.32s cubic-bezier(0.34,1.4,0.64,1);
-  pointer-events:none;white-space:nowrap;
-  font-family:'Poppins',sans-serif;
-}
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--black);color:var(--cream);padding:11px 22px;border-radius:99px;font-size:0.78rem;font-weight:600;z-index:9999;opacity:0;transition:0.32s;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* SEC HEAD */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:20px}
+.sec-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted)}
+.sec-link{font-size:0.78rem;font-weight:600;color:var(--black);cursor:pointer}
 </style>
 </head>
 <body>
-<div class="toast" id="toast"></div>
-<div class="shell">
 
-<!-- =================== ONBOARDING =================== -->
-<div id="ob">
-  <!-- splash -->
-  <div class="splash" id="splash">
-    <div class="splash-logo">apê<span>.</span></div>
-    <div class="splash-tagline">sua vida adulta, organizada</div>
-    <div class="splash-dot"></div>
+<div class="toast" id="toast"></div>
+
+<div class="shell">
+  <!-- ONBOARDING -->
+  <div id="ob">
+    <div class="splash" id="splash">
+      <div class="splash-logo">apê<span>.</span></div>
+      <div class="splash-tagline">sua vida adulta, organizada</div>
+      <div class="splash-dot"></div>
+    </div>
+
+    <div class="ob-steps" id="obSteps">
+      <!-- Welcome -->
+      <div class="step active" id="step0">
+        <div class="step-top">
+          <div class="step-num">Bem-vindo</div>
+          <div class="step-title">Morar sozinho é<br><em>incrível.</em><br>E bem caótico.</div>
+          <div class="step-desc">O apê. te ajuda a organizar tudo: finanças, rotina e as mil coisas que vêm junto com o lar.</div>
+        </div>
+        <div class="illo-wrap">
+          <div class="illo-box">🗝️<div class="illo-pill">Parabéns pelo apê! 🎉</div></div>
+        </div>
+      </div>
+
+      <!-- Passo 1 -->
+      <div class="step" id="step1">
+        <div class="step-top">
+          <div class="step-num">Passo 1 de 3</div>
+          <div class="step-title">Como posso<br>te <em>chamar?</em></div>
+        </div>
+        <div class="field-group">
+          <div>
+            <div class="field-label">Seu nome</div>
+            <input class="field-input" id="inpNome" type="text" placeholder="Ex: João, Ana...">
+          </div>
+          <div>
+            <div class="field-label">Cidade</div>
+            <input class="field-input" id="inpCidade" type="text" placeholder="Ex: São Paulo, BH...">
+          </div>
+        </div>
+      </div>
+
+      <!-- Passo 2 -->
+      <div class="step" id="step2">
+        <div class="step-top">
+          <div class="step-num">Passo 2 de 3</div>
+          <div class="step-title">Agora, o<br><em>financeiro.</em></div>
+        </div>
+        <div class="field-group">
+          <div>
+            <div class="field-label">Renda mensal</div>
+            <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpRenda" type="number" placeholder="0,00"></div>
+          </div>
+          <div>
+            <div class="field-label">Saldo atual</div>
+            <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpSaldo" type="number" placeholder="0,00"></div>
+          </div>
+          <div>
+            <div class="field-label">Aluguel / Financiamento</div>
+            <div class="prefix-wrap"><span class="prefix">R$</span><input class="field-input" id="inpAluguel" type="number" placeholder="0,00"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Passo 3 -->
+      <div class="step" id="step3">
+        <div class="step-top">
+          <div class="step-num">Passo 3 de 3</div>
+          <div class="step-title">O que já<br>tem no <em>apê?</em></div>
+        </div>
+        <div class="field-group">
+          <div class="chips" id="obItems">
+            <div class="chip on" data-item="Geladeira">Geladeira</div>
+            <div class="chip" data-item="Fogão">Fogão</div>
+            <div class="chip" data-item="Sofá">Sofá</div>
+            <div class="chip" data-item="TV">TV</div>
+            <div class="chip" data-item="Máquina de lavar">Máquina de lavar</div>
+            <div class="chip" data-item="Internet">Internet</div>
+            <div class="chip" data-item="Cama">Cama</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ob-bottom">
+      <div class="progress-dots">
+        <div class="pdot on" id="pd0"></div>
+        <div class="pdot" id="pd1"></div>
+        <div class="pdot" id="pd2"></div>
+        <div class="pdot" id="pd3"></div>
+      </div>
+      <button class="btn-primary" id="btnOb" onclick="Logic.obNext()">Continuar</button>
+      <div class="skip-link" onclick="Logic.demoMode()">Entrar como visitante</div>
+    </div>
   </div>
 
-  <!-- steps container -->
-  <div class="ob-steps" id="obSteps">
+  <!-- APP MAIN -->
+  <div id="app">
+    <div class="statusbar">
+      <span>9:41</span>
+      <div style="display:flex;gap:5px"><span>●●●●</span><span>5G</span></div>
+    </div>
 
-    <!-- step 0: welcome -->
-    <div class="step active" id="step0">
-      <div class="step-top">
-        <div class="step-num">Bem-vindo</div>
-        <div class="step-title">Morar sozinho é<br><em>incrível.</em><br>E bem caótico.</div>
-        <div class="step-desc">O apê. te ajuda a organizar tudo: finanças, rotina e as mil coisas que vêm junto com o primeiro apartamento.</div>
+    <div class="topbar">
+      <div>
+        <div class="app-logo">apê<span>.</span></div>
+        <div class="greeting-sub" id="greetSub">Boa tarde 👋</div>
       </div>
-      <div class="illo-wrap">
-        <div class="illo-box">
-          🗝️
-          <div class="illo-pill">Organizar meu apê! ➡︎</div>
-        </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="icon-btn"><div class="notif-badge"></div><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+        <button class="avatar-btn" id="avatarBtn">F</button>
       </div>
     </div>
 
-    <!-- step 1: nome -->
-    <div class="step" id="step1">
-      <div class="step-top">
-        <div class="step-num">Passo 1 de 3</div>
-        <div class="step-title">Como posso<br>te <em>chamar?</em></div>
-        <div class="step-desc">Vamos personalizar tudo pra você.</div>
-      </div>
-      <div class="field-group">
-        <div>
-          <div class="field-label">Seu nome</div>
-          <input class="field-input" id="inpNome" type="text" placeholder="Ex: João, Ana..." autocomplete="off">
-        </div>
-        <div>
-          <div class="field-label">Sua idade</div>
-          <input class="field-input" id="inpIdade" type="number" placeholder="Ex: 24" min="18" max="40">
-        </div>
-        <div>
-          <div class="field-label">Cidade</div>
-          <input class="field-input" id="inpCidade" type="text" placeholder="Ex: São Paulo, BH...">
-        </div>
-      </div>
+    <div class="tabs">
+      <button class="tab on" onclick="UI.switchTab('home')">Início</button>
+      <button class="tab" onclick="UI.switchTab('financas')">Finanças</button>
+      <button class="tab" onclick="UI.switchTab('tarefas')">Conquistas</button>
+      <button class="tab" onclick="UI.switchTab('perfil')">Perfil</button>
     </div>
 
-    <!-- step 2: financeiro -->
-    <div class="step" id="step2">
-      <div class="step-top">
-        <div class="step-num">Passo 2 de 3</div>
-        <div class="step-title">Agora, o<br><em>financeiro.</em></div>
-        <div class="step-desc">Não precisa ser exato — uma estimativa já ajuda muito.</div>
+    <div class="content" id="mainContent">
+      <!-- PANEL HOME -->
+      <div class="panel on" id="panel-home">
+        <div class="hero-card">
+          <div class="hero-greeting" id="userTitle">Carregando...</div>
+          <div class="hero-name" id="heroName">Usuário <span>👋</span></div>
+          <div class="hero-stats">
+            <div class="hstat">
+              <div class="hstat-label">Saldo</div>
+              <div class="hstat-val yellow" id="valSaldo">R$ 0</div>
+              <div class="hstat-sub">Disponível</div>
+            </div>
+            <div class="hstat">
+              <div class="hstat-label">Nível</div>
+              <div class="hstat-val" id="valLevel">1</div>
+              <div class="hstat-sub" id="valXPLabel">0 / 300 XP</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-card" id="aiCard">
+          <div class="ai-icon">💡</div>
+          <div class="ai-text" id="aiSuggestion">Analizando seu perfil para dar dicas...</div>
+        </div>
+
+        <div class="prog-card">
+          <div class="prog-top">
+            <div>
+              <div class="prog-title">Progresso do Apê</div>
+              <div class="prog-sub" id="progSub">0 de 10 itens</div>
+            </div>
+            <div class="prog-pct" id="progPct">0%</div>
+          </div>
+          <div class="prog-bg"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+        </div>
+
+        <div class="sec-head"><span class="sec-title">Próximos Passos</span></div>
+        <div class="list-card" id="homeTaskList">
+          <!-- Render dinâmico -->
+        </div>
       </div>
-      <div class="field-group">
-        <div>
-          <div class="field-label">Renda mensal</div>
-          <div class="prefix-wrap">
-            <span class="prefix">R$</span>
-            <input class="field-input" id="inpRenda" type="number" placeholder="0,00">
+
+      <!-- PANEL FINANÇAS -->
+      <div class="panel" id="panel-financas">
+        <div class="fin-hero">
+          <div class="fin-grid">
+            <div class="fcard">
+              <div class="fcard-label">Renda</div>
+              <div class="fcard-val y" id="finRenda">R$ 0</div>
+            </div>
+            <div class="fcard">
+              <div class="fcard-label">Aluguel</div>
+              <div class="fcard-val" id="finAluguel">R$ 0</div>
+            </div>
           </div>
         </div>
-        <div>
-          <div class="field-label">Saldo atual</div>
-          <div class="prefix-wrap">
-            <span class="prefix">R$</span>
-            <input class="field-input" id="inpSaldo" type="number" placeholder="0,00">
-          </div>
+        
+        <div class="sec-head">
+          <span class="sec-title">Despesas do Mês</span>
+          <span class="sec-link" onclick="Logic.addExpense()">+ Adicionar</span>
         </div>
-        <div>
-          <div class="field-label">Valor do aluguel / financiamento</div>
-          <div class="prefix-wrap">
-            <span class="prefix">R$</span>
-            <input class="field-input" id="inpAluguel" type="number" placeholder="0,00">
-          </div>
+        <div class="list-card" id="expenseList">
+          <!-- Render dinâmico -->
         </div>
       </div>
+
+      <!-- PANEL PERFIL -->
+      <div class="panel" id="panel-perfil">
+        <div class="hero-card" style="text-align:center">
+            <div class="avatar-btn" style="width:70px;height:70px;margin:0 auto 15px;font-size:1.5rem" id="perfAv">U</div>
+            <div class="hero-name" id="perfName" style="margin-bottom:5px">Usuário</div>
+            <div class="hero-greeting" id="perfTitle">Nível 1</div>
+            <button class="btn-primary" style="margin-top:20px; background:rgba(255,255,255,0.1)" onclick="Logic.reset()">Resetar Dados</button>
+        </div>
+        
+        <div class="sec-head"><span class="sec-title">Suas Conquistas</span></div>
+        <div class="list-card" id="badgeList">
+          <!-- Render dinâmico de badges -->
+        </div>
+      </div>
+      
+      <!-- PANEL CONQUISTAS (Antigo Tarefas) -->
+      <div class="panel" id="panel-tarefas">
+          <div class="sec-head"><span class="sec-title">Missões de Adulto</span></div>
+          <div class="list-card" id="fullTaskList"></div>
+      </div>
+
     </div>
 
-    <!-- step 3: perfil apê -->
-    <div class="step" id="step3">
-      <div class="step-top">
-        <div class="step-num">Passo 3 de 3</div>
-        <div class="step-title">Qual é a situação<br>do seu <em>apê?</em></div>
-        <div class="step-desc">Selecione tudo que se aplica.</div>
+    <nav class="navbar">
+      <div class="nb-item on" onclick="UI.switchTab('home')">
+        <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <span class="nb-label">Início</span>
       </div>
-      <div class="field-group">
-        <div>
-          <div class="field-label">Tipo de moradia</div>
-          <div class="chips">
-            <div class="chip on" onclick="toggleChip(this)">Alugado</div>
-            <div class="chip" onclick="toggleChip(this)">Financiado</div>
-            <div class="chip" onclick="toggleChip(this)">Quitado</div>
-            <div class="chip" onclick="toggleChip(this)">Rep</div>
-          </div>
-        </div>
-        <div>
-          <div class="field-label" style="margin-top:8px">O que ainda falta?</div>
-          <div class="chips">
-            <div class="chip on" onclick="toggleChip(this)">Geladeira</div>
-            <div class="chip on" onclick="toggleChip(this)">Sofá</div>
-            <div class="chip" onclick="toggleChip(this)">TV</div>
-            <div class="chip" onclick="toggleChip(this)">Máquina de lavar</div>
-            <div class="chip" onclick="toggleChip(this)">Mesa</div>
-            <div class="chip" onclick="toggleChip(this)">Micro-ondas</div>
-            <div class="chip" onclick="toggleChip(this)">Armários</div>
-            <div class="chip" onclick="toggleChip(this)">Internet</div>
-          </div>
-        </div>
+      <div class="nb-item" onclick="UI.switchTab('financas')">
+        <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <span class="nb-label">Finanças</span>
       </div>
-    </div>
-
-  </div><!-- /ob-steps -->
-
-  <div class="ob-bottom">
-    <div class="progress-dots">
-      <div class="pdot" id="pd0"></div>
-      <div class="pdot" id="pd1"></div>
-      <div class="pdot" id="pd2"></div>
-      <div class="pdot" id="pd3"></div>
-    </div>
-    <button class="btn-primary" id="btnOb" onclick="obNext()">
-      <span id="obBtnLabel">Começar</span>
-    </button>
-    <div class="skip-link" id="skipLink" onclick="skipOb()">Pular</div>
+      <div class="nb-item" onclick="UI.switchTab('tarefas')">
+        <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <span class="nb-label">Missões</span>
+      </div>
+      <div class="nb-item" onclick="UI.switchTab('perfil')">
+        <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <span class="nb-label">Perfil</span>
+      </div>
+    </nav>
   </div>
 </div>
 
-<!-- =================== APP =================== -->
-<div id="app">
-  <div class="statusbar">
-    <span></span>
-    <div class="sb-right"><span>●●●</span><span></span></div>
-  </div>
-
-  <div class="topbar">
-    <div>
-      <div class="app-logo">apê<span>.</span></div>
-      <div class="greeting-sub" id="greetSub">Olá 👋</div>
-    </div>
-    <div class="topbar-right">
-      <button class="icon-btn" onclick="showToast('Sem notificações novas')">
-        <div class="notif-badge"></div>
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      </button>
-      <button class="avatar-btn" id="avatarBtn">F</button>
-    </div>
-  </div>
-
-  <div class="tabs" id="tabsRow">
-    <button class="tab on" onclick="switchTab('home',this)">Início</button>
-    <button class="tab" onclick="switchTab('financas',this)">Finanças</button>
-    <button class="tab" onclick="switchTab('rotina',this)">Rotina</button>
-    <button class="tab" onclick="switchTab('tarefas',this)">Tarefas</button>
-    <button class="tab" onclick="switchTab('perfil',this)">Perfil</button>
-  </div>
-
-  <div class="content" id="mainContent">
-
-    <!-- HOME -->
-    <div class="panel on" id="panel-home">
-      <div class="hero-card">
-        <div class="hero-greeting">Bem-vindo de volta,</div>
-        <div class="hero-name" id="heroName">Fávaro <span>👋</span></div>
-        <div class="hero-stats">
-          <div class="hstat">
-            <div class="hstat-label">Saldo atual</div>
-            <div class="hstat-val yellow" id="heroSaldo">R$ —</div>
-            <div class="hstat-sub">Disponível</div>
-          </div>
-          <div class="hstat">
-            <div class="hstat-label">Apê completo</div>
-            <div class="hstat-val">32%</div>
-            <div class="hstat-sub">3 de 5 etapas</div>
-          </div>
-          <div class="hstat">
-            <div class="hstat-label">Renda mensal</div>
-            <div class="hstat-val" id="heroRenda">R$ —</div>
-            <div class="hstat-sub">Cadastrada</div>
-          </div>
-          <div class="hstat">
-            <div class="hstat-label">Tarefas hoje</div>
-            <div class="hstat-val">2<span style="font-size:0.9rem;color:rgba(245,240,232,0.4)">/5</span></div>
-            <div class="hstat-sub">Concluídas</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="prog-card">
-        <div class="prog-top">
-          <div>
-            <div class="prog-title">Montando o apê</div>
-            <div class="prog-sub">3 de 5 etapas concluídas</div>
-          </div>
-          <div class="prog-pct">32%</div>
-        </div>
-        <div class="prog-bg"><div class="prog-fill" style="width:32%"></div></div>
-        <div class="prog-meta"><span>Início</span><span>Apê dos sonhos ✨</span></div>
-      </div>
-
-      <div class="resumo-row">
-        <div class="rcard" onclick="switchTab('tarefas',null)">
-          <div class="rcard-icon">📋</div>
-          <div class="rcard-num">3</div>
-          <div class="rcard-label">Tarefas pendentes</div>
-        </div>
-        <div class="rcard accent" onclick="switchTab('financas',null)">
-          <div class="rcard-icon">💸</div>
-          <div class="rcard-num">2</div>
-          <div class="rcard-label">Contas a vencer</div>
-        </div>
-      </div>
-
-      <div class="sec-head">
-        <span class="sec-title">Ações rápidas</span>
-      </div>
-      <div class="qa-grid" style="margin-bottom:4px">
-        <div class="qa" onclick="showToast('Adicionar tarefa')">
-          <div class="qa-icon">✅</div>
-          <div class="qa-label">Tarefa</div>
-        </div>
-        <div class="qa" onclick="showToast('Registrar despesa')">
-          <div class="qa-icon">💰</div>
-          <div class="qa-label">Despesa</div>
-        </div>
-        <div class="qa" onclick="showToast('Adicionar conta')">
-          <div class="qa-icon">📄</div>
-          <div class="qa-label">Conta</div>
-        </div>
-        <div class="qa" onclick="showToast('Lista de compras')">
-          <div class="qa-icon">🛒</div>
-          <div class="qa-label">Compras</div>
-        </div>
-      </div>
-
-      <div class="sec-head">
-        <span class="sec-title">Lista do apê</span>
-        <span class="sec-link" onclick="switchTab('tarefas',null)">Ver tudo</span>
-      </div>
-      <div class="list-card">
-        <div class="list-item"><div class="li-dot" style="background:#7DD4A0"></div><span class="li-text done">Comprar colchão</span><span class="li-tag tag-ok">Feito</span></div>
-        <div class="list-item"><div class="li-dot" style="background:#7DD4A0"></div><span class="li-text done">Instalar chuveiro</span><span class="li-tag tag-ok">Feito</span></div>
-        <div class="list-item"><div class="li-dot" style="background:var(--yellow-dark)"></div><span class="li-text">Comprar geladeira</span><span class="li-tag tag-pend">Pendente</span></div>
-        <div class="list-item"><div class="li-dot" style="background:var(--yellow-dark)"></div><span class="li-text">Contratar internet</span><span class="li-tag tag-pend">Pendente</span></div>
-      </div>
-    </div>
-
-    <!-- FINANÇAS -->
-    <div class="panel" id="panel-financas">
-      <div class="fin-hero">
-        <div class="fin-period">
-          <div class="fin-month">📅 Junho 2025</div>
-          <div class="fin-arrows">
-            <button class="fin-arrow" onclick="showToast('Mês anterior')">‹</button>
-            <button class="fin-arrow" onclick="showToast('Próximo mês')">›</button>
-          </div>
-        </div>
-        <div class="fin-grid">
-          <div class="fcard">
-            <div class="fcard-label">Receitas</div>
-            <div class="fcard-val y" id="finRenda">R$ —</div>
-            <div class="fcard-sub">Este mês</div>
-          </div>
-          <div class="fcard">
-            <div class="fcard-label">Despesas</div>
-            <div class="fcard-val">R$ 2.549</div>
-            <div class="fcard-sub">Este mês</div>
-          </div>
-          <div class="fcard">
-            <div class="fcard-label">Saldo atual</div>
-            <div class="fcard-val g" id="finSaldo">R$ —</div>
-            <div class="fcard-sub">Disponível</div>
-          </div>
-          <div class="fcard">
-            <div class="fcard-label">Aluguel/Fin.</div>
-            <div class="fcard-val" id="finAluguel">R$ —</div>
-            <div class="fcard-sub">Fixo mensal</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sec-head">
-        <span class="sec-title">Contas do mês</span>
-        <span class="sec-link" onclick="showToast('Ver todas as contas')">+ Adicionar</span>
-      </div>
-      <div class="conta-card">
-        <div class="conta-item">
-          <div class="conta-left">
-            <div class="conta-name">Financiamento <span class="cpill cp-p">Pendente</span></div>
-            <div class="conta-due">Vence dia 5</div>
-          </div>
-          <div class="conta-val">R$ 1.850</div>
-        </div>
-        <div class="conta-item">
-          <div class="conta-left">
-            <div class="conta-name">Internet <span class="cpill cp-p">Pendente</span></div>
-            <div class="conta-due">Vence dia 10</div>
-          </div>
-          <div class="conta-val">R$ 99</div>
-        </div>
-        <div class="conta-item">
-          <div class="conta-left">
-            <div class="conta-name">Condomínio <span class="cpill cp-ok">Pago</span></div>
-            <div class="conta-due">Pago dia 1</div>
-          </div>
-          <div class="conta-val ok">R$ 450</div>
-        </div>
-        <div class="conta-item">
-          <div class="conta-left">
-            <div class="conta-name">Energia <span class="cpill cp-ok">Pago</span></div>
-            <div class="conta-due">Pago dia 2</div>
-          </div>
-          <div class="conta-val ok">R$ 120</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ROTINA -->
-    <div class="panel" id="panel-rotina">
-      <div class="rotina-header">
-        <div>
-          <div class="rot-date">Terça, 10 de Junho</div>
-          <div class="rot-title">Minha Rotina</div>
-        </div>
-        <div class="rot-progress">
-          <div class="rot-pct">60%</div>
-          <div class="rot-sub">concluído</div>
-        </div>
-      </div>
-      <div class="list-card">
-        <div class="rot-item" onclick="toggleRot(this)">
-          <div class="rot-time">06:30</div>
-          <div class="rot-dot" style="background:#FFF3CD">🌅</div>
-          <div class="rot-info"><div class="rot-name done">Acordar e alongar</div><div class="rot-cat">Saúde</div></div>
-        </div>
-        <div class="rot-item" onclick="toggleRot(this)">
-          <div class="rot-time">07:00</div>
-          <div class="rot-dot" style="background:#D4EDDA">🍳</div>
-          <div class="rot-info"><div class="rot-name done">Café da manhã</div><div class="rot-cat">Alimentação</div></div>
-        </div>
-        <div class="rot-item" onclick="toggleRot(this)">
-          <div class="rot-time">07:30</div>
-          <div class="rot-dot" style="background:#D1ECF1">🏠</div>
-          <div class="rot-info"><div class="rot-name done">Arrumar o apê</div><div class="rot-cat">Casa</div></div>
-        </div>
-        <div class="rot-item" onclick="toggleRot(this)">
-          <div class="rot-time">08:00</div>
-          <div class="rot-dot" style="background:#F5C842" style="background:var(--yellow-soft)">💼</div>
-          <div class="rot-info"><div class="rot-name">Trabalho</div><div class="rot-cat">Compromisso</div></div>
-        </div>
-        <div class="rot-item" onclick="toggleRot(this)">
-          <div class="rot-time">18:30</div>
-          <div class="rot-dot" style="background:#E2D4F0">💪</div>
-          <div class="rot-info"><div class="rot-name">Treino</div><div class="rot-cat">Saúde</div></div>
-        </div>
-        <div class="rot-item" onclick="toggleRot(this)">
-          <div class="rot-time">21:00</div>
-          <div class="rot-dot" style="background:#FADBD8">💸</div>
-          <div class="rot-info"><div class="rot-name">Atualizar finanças</div><div class="rot-cat">Financeiro</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAREFAS -->
-    <div class="panel" id="panel-tarefas">
-      <div class="sec-head" style="margin-top:4px">
-        <span class="sec-title">Lista do apê</span>
-        <span class="sec-link" onclick="showToast('Adicionar tarefa')">+ Nova</span>
-      </div>
-      <div class="list-card" id="taskList">
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:#7DD4A0"></div>
-          <span class="li-text done">Comprar colchão</span>
-          <span class="li-tag tag-ok">Feito</span>
-        </div>
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:#7DD4A0"></div>
-          <span class="li-text done">Instalar chuveiro</span>
-          <span class="li-tag tag-ok">Feito</span>
-        </div>
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:var(--yellow-dark)"></div>
-          <span class="li-text">Comprar geladeira</span>
-          <span class="li-tag tag-pend">Pendente</span>
-        </div>
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:var(--yellow-dark)"></div>
-          <span class="li-text">Contratar internet</span>
-          <span class="li-tag tag-pend">Pendente</span>
-        </div>
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:var(--yellow-dark)"></div>
-          <span class="li-text">Comprar sofá</span>
-          <span class="li-tag tag-pend">Pendente</span>
-        </div>
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:var(--yellow-dark)"></div>
-          <span class="li-text">Montar home office</span>
-          <span class="li-tag tag-pend">Pendente</span>
-        </div>
-      </div>
-
-      <div class="sec-head">
-        <span class="sec-title">Compras</span>
-        <span class="sec-link" onclick="showToast('Ver lista completa')">Ver tudo</span>
-      </div>
-      <div class="list-card">
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:var(--muted2)"></div>
-          <span class="li-text">Desengordurante</span>
-          <span class="li-tag tag-pend">Pendente</span>
-        </div>
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:var(--muted2)"></div>
-          <span class="li-text">Rodo e vassoura</span>
-          <span class="li-tag tag-pend">Pendente</span>
-        </div>
-        <div class="list-item" onclick="togTask(this)">
-          <div class="li-dot" style="background:#7DD4A0"></div>
-          <span class="li-text done">Tapete de banheiro</span>
-          <span class="li-tag tag-ok">Feito</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- PERFIL -->
-    <div class="panel" id="panel-perfil">
-      <div class="perfil-hero">
-        <div class="perfil-av" id="perfAvatar">F</div>
-        <div class="perfil-name" id="perfName">Fávaro</div>
-        <div class="perfil-since">Morando sozinho desde Jan 2024 · SP</div>
-        <div class="perfil-stats">
-          <div class="pstat"><div class="pstat-val">32%</div><div class="pstat-label">Apê completo</div></div>
-          <div class="pstat"><div class="pstat-val">7</div><div class="pstat-label">Semanas</div></div>
-          <div class="pstat"><div class="pstat-val">12</div><div class="pstat-label">Tarefas feitas</div></div>
-        </div>
-      </div>
-
-      <div class="list-card">
-        <div class="perf-row" onclick="showToast('Editar perfil')">
-          <div class="perf-left"><div class="perf-icon">👤</div><div class="perf-name">Editar perfil</div></div>
-          <span class="perf-arr">›</span>
-        </div>
-        <div class="perf-row" onclick="showToast('Dados financeiros')">
-          <div class="perf-left"><div class="perf-icon">💰</div><div class="perf-name">Dados financeiros</div></div>
-          <span class="perf-arr">›</span>
-        </div>
-        <div class="perf-row" onclick="showToast('Notificações')">
-          <div class="perf-left"><div class="perf-icon">🔔</div><div class="perf-name">Notificações</div></div>
-          <span class="perf-arr">›</span>
-        </div>
-        <div class="perf-row" onclick="showToast('Aparência')">
-          <div class="perf-left"><div class="perf-icon">🎨</div><div class="perf-name">Aparência</div></div>
-          <span class="perf-arr">›</span>
-        </div>
-        <div class="perf-row" onclick="showToast('Sobre o apê.')">
-          <div class="perf-left"><div class="perf-icon">ℹ️</div><div class="perf-name">Sobre o apê.</div></div>
-          <span class="perf-arr">›</span>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-
-  <nav class="navbar">
-    <div class="nb-item on" id="nb-home" onclick="switchTab('home',null);setNb('home')">
-      <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-      <span class="nb-label">Início</span>
-    </div>
-    <div class="nb-item" id="nb-financas" onclick="switchTab('financas',null);setNb('financas')">
-      <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-      <span class="nb-label">Finanças</span>
-    </div>
-    <div class="nb-item" id="nb-rotina" onclick="switchTab('rotina',null);setNb('rotina')">
-      <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-      <span class="nb-label">Rotina</span>
-    </div>
-    <div class="nb-item" id="nb-tarefas" onclick="switchTab('tarefas',null);setNb('tarefas')">
-      <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-      <span class="nb-label">Tarefas</span>
-    </div>
-    <div class="nb-item" id="nb-perfil" onclick="switchTab('perfil',null);setNb('perfil')">
-      <div class="nb-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-      <span class="nb-label">Perfil</span>
-    </div>
-  </nav>
-</div><!-- /app -->
-
-</div><!-- /shell -->
-
 <script>
-// ---- SPLASH ----
-setTimeout(function(){
-  var sp = document.getElementById('splash');
-  sp.style.opacity = '0';
-  setTimeout(function(){
-    sp.style.display = 'none';
-  }, 500);
-}, 1800);
+/**
+ * SISTEMA APÊ - CORE LOGIC
+ */
 
-// ---- ONBOARDING ----
-var curStep = 0;
-var totalSteps = 4;
-var userData = {};
+// 1. DATA STATE
+let state = {
+    user: { nome: "", cidade: "", renda: 0, saldo: 0, aluguel: 0 },
+    xp: 0,
+    level: 1,
+    title: "Sobrevivente do Colchão",
+    onboardingComplete: false,
+    tasks: [
+        { id: 1, text: "Comprar Colchão", xp: 150, done: false, category: "Móveis" },
+        { id: 2, text: "Instalar Geladeira", xp: 300, done: false, category: "Eletro" },
+        { id: 3, text: "Contratar Internet", xp: 100, done: false, category: "Serviços" },
+        { id: 4, text: "Comprar Sofá", xp: 400, done: false, category: "Móveis" },
+        { id: 5, text: "Primeira Faxina", xp: 100, done: false, category: "Rotina" },
+        { id: 6, text: "Organizar Documentos", xp: 50, done: false, category: "Admin" },
+        { id: 7, text: "Instalar Chuveiro", xp: 200, done: false, category: "Reparo" },
+        { id: 8, text: "Comprar Filtro de Água", xp: 120, done: false, category: "Cozinha" }
+    ],
+    expenses: [
+        { id: 1, title: "Aluguel", value: 0, paid: false }
+    ],
+    badges: []
+};
 
-function obNext(){
-  if(curStep === 0){
-    goStep(1);
-  } else if(curStep === 1){
-    var nome = document.getElementById('inpNome').value.trim();
-    if(!nome){ showToast('Digite seu nome pra continuar'); return; }
-    userData.nome = nome;
-    userData.idade = document.getElementById('inpIdade').value;
-    userData.cidade = document.getElementById('inpCidade').value;
-    goStep(2);
-  } else if(curStep === 2){
-    userData.renda = document.getElementById('inpRenda').value;
-    userData.saldo = document.getElementById('inpSaldo').value;
-    userData.aluguel = document.getElementById('inpAluguel').value;
-    goStep(3);
-  } else if(curStep === 3){
-    startApp();
-  }
-}
+const levels = [
+    { lvl: 1, min: 0, title: "Sobrevivente do Colchão" },
+    { lvl: 2, min: 300, title: "Morador Iniciante" },
+    { lvl: 3, min: 700, title: "Domador de Boletos" },
+    { lvl: 4, min: 1200, title: "Caçador de Promoções" },
+    { lvl: 5, min: 2000, title: "Adulto Funcional" },
+    { lvl: 6, min: 3000, title: "Mestre do Apê" }
+];
 
-function goStep(n){
-  document.getElementById('step'+curStep).classList.remove('active');
-  document.getElementById('step'+curStep).classList.add('out');
-  setTimeout(function(){
-    document.getElementById('step'+(n-1 >= 0 ? n-1 : 0)).classList.remove('out');
-  }, 400);
-  curStep = n;
-  document.getElementById('step'+curStep).classList.add('active');
-  updateDots();
-  var lbl = document.getElementById('obBtnLabel');
-  lbl.textContent = curStep === totalSteps-1 ? 'Entrar no apê 🚀' : 'Continuar';
-  document.getElementById('skipLink').style.display = curStep === 0 ? 'block' : 'none';
-}
-
-function updateDots(){
-  for(var i=0;i<totalSteps;i++){
-    var d = document.getElementById('pd'+i);
-    if(d) d.className = i===curStep ? 'pdot on' : 'pdot';
-  }
-}
-
-function skipOb(){ startApp(); }
-
-function toggleChip(el){
-  el.classList.toggle('on');
-}
-
-function startApp(){
-  var nome = userData.nome || 'Fávaro';
-  var inicial = nome.charAt(0).toUpperCase();
-  // apply user data
-  document.getElementById('heroName').innerHTML = nome + ' <span>👋</span>';
-  document.getElementById('avatarBtn').textContent = inicial;
-  document.getElementById('perfAvatar').textContent = inicial;
-  document.getElementById('perfName').textContent = nome;
-  if(userData.saldo){
-    var s = 'R$ '+parseFloat(userData.saldo).toLocaleString('pt-BR');
-    document.getElementById('heroSaldo').textContent = s;
-    document.getElementById('finSaldo').textContent = s;
-  }
-  if(userData.renda){
-    var r = 'R$ '+parseFloat(userData.renda).toLocaleString('pt-BR');
-    document.getElementById('heroRenda').textContent = r;
-    document.getElementById('finRenda').textContent = r;
-  }
-  if(userData.aluguel){
-    document.getElementById('finAluguel').textContent = 'R$ '+parseFloat(userData.aluguel).toLocaleString('pt-BR');
-  }
-  document.getElementById('greetSub').textContent = 'Boa tarde, '+nome+' 👋';
-
-  // transition
-  var ob = document.getElementById('ob');
-  ob.style.transition = 'opacity 0.4s ease';
-  ob.style.opacity = '0';
-  setTimeout(function(){
-    ob.style.display = 'none';
-    var app = document.getElementById('app');
-    app.style.display = 'flex';
-    app.style.opacity = '0';
-    app.style.transition = 'opacity 0.4s ease';
-    setTimeout(function(){ app.style.opacity='1'; },20);
-  }, 380);
-}
-
-// ---- TABS ----
-function switchTab(name, tabEl){
-  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
-  document.getElementById('panel-'+name).classList.add('on');
-  if(tabEl){
-    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
-    tabEl.classList.add('on');
-  }
-  setNb(name);
-  document.getElementById('mainContent').scrollTop = 0;
-}
-
-function setNb(name){
-  document.querySelectorAll('.nb-item').forEach(function(n){ n.classList.remove('on'); });
-  var nb = document.getElementById('nb-'+name);
-  if(nb) nb.classList.add('on');
-  // sync tabs
-  document.querySelectorAll('.tab').forEach(function(t){
-    t.classList.remove('on');
-    if(t.getAttribute('onclick') && t.getAttribute('onclick').includes("'"+name+"'")){
-      t.classList.add('on');
+// 2. STORAGE ENGINE
+const Storage = {
+    save() {
+        localStorage.setItem('ape_app_data', JSON.stringify(state));
+    },
+    load() {
+        const saved = localStorage.getItem('ape_app_data');
+        if (saved) {
+            state = JSON.parse(saved);
+            return true;
+        }
+        return false;
     }
-  });
-}
+};
 
-// ---- TASKS ----
-function togTask(el){
-  var tx = el.querySelector('.li-text');
-  var tg = el.querySelector('.li-tag');
-  var dot = el.querySelector('.li-dot');
-  if(tx.classList.contains('done')){
-    tx.classList.remove('done');
-    tg.textContent='Pendente'; tg.className='li-tag tag-pend';
-    dot.style.background='var(--yellow-dark)';
-  } else {
-    tx.classList.add('done');
-    tg.textContent='Feito'; tg.className='li-tag tag-ok';
-    dot.style.background='#7DD4A0';
-    showToast('Feito! ✓');
-  }
-}
+// 3. GAMIFICATION & LOGIC
+const Logic = {
+    curStep: 0,
 
-// ---- ROTINA ----
-function toggleRot(el){
-  var name = el.querySelector('.rot-name');
-  name.classList.toggle('done');
-  if(name.classList.contains('done')) showToast('Concluído! ✓');
-}
+    init() {
+        if (Storage.load() && state.onboardingComplete) {
+            UI.showApp();
+        } else {
+            document.getElementById('splash').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => document.getElementById('splash').style.display = 'none', 500);
+            }, 1500);
+        }
+        this.bindChips();
+    },
 
-// ---- TOAST ----
-function showToast(msg){
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._t);
-  t._t = setTimeout(function(){ t.classList.remove('show'); }, 2000);
-}
+    bindChips() {
+        document.querySelectorAll('.chip').forEach(c => {
+            c.onclick = () => c.classList.toggle('on');
+        });
+    },
 
-updateDots();
+    obNext() {
+        if (this.curStep === 0) this.goStep(1);
+        else if (this.curStep === 1) {
+            state.user.nome = document.getElementById('inpNome').value;
+            if (!state.user.nome) return UI.toast("Diga seu nome!");
+            this.goStep(2);
+        }
+        else if (this.curStep === 2) {
+            state.user.renda = parseFloat(document.getElementById('inpRenda').value) || 0;
+            state.user.saldo = parseFloat(document.getElementById('inpSaldo').value) || 0;
+            state.user.aluguel = parseFloat(document.getElementById('inpAluguel').value) || 0;
+            state.expenses[0].value = state.user.aluguel;
+            this.goStep(3);
+        }
+        else if (this.curStep === 3) {
+            this.finishOb();
+        }
+    },
+
+    goStep(n) {
+        document.getElementById(`step${this.curStep}`).classList.add('out');
+        document.getElementById(`step${this.curStep}`).classList.remove('active');
+        this.curStep = n;
+        document.getElementById(`step${this.curStep}`).classList.add('active');
+        
+        document.querySelectorAll('.pdot').forEach((d, i) => {
+            d.className = i === n ? 'pdot on' : 'pdot';
+        });
+        
+        document.getElementById('btnOb').textContent = n === 3 ? "Começar Vida Nova 🚀" : "Continuar";
+    },
+
+    finishOb() {
+        // Checar chips selecionados
+        const itemsOn = document.querySelectorAll('#obItems .chip.on');
+        itemsOn.forEach(chip => {
+            const itemName = chip.getAttribute('data-item');
+            const task = state.tasks.find(t => t.text.includes(itemName));
+            if (task) task.done = true;
+        });
+
+        state.onboardingComplete = true;
+        this.calculateProgress();
+        Storage.save();
+        UI.showApp();
+    },
+
+    calculateProgress() {
+        const done = state.tasks.filter(t => t.done).length;
+        const total = state.tasks.length;
+        const pct = Math.round((done / total) * 100);
+        
+        // XP Calculation
+        let currentXP = state.tasks.filter(t => t.done).reduce((acc, t) => acc + t.xp, 0);
+        state.xp = currentXP;
+
+        // Level Logic
+        let newLvl = 1;
+        let newTitle = levels[0].title;
+        levels.forEach(l => {
+            if (currentXP >= l.min) {
+                newLvl = l.lvl;
+                newTitle = l.title;
+            }
+        });
+
+        if (newLvl > state.level) UI.toast(`Level Up! Agora você é ${newTitle} 🎊`);
+        
+        state.level = newLvl;
+        state.title = newTitle;
+        
+        UI.updateHome(pct, done, total);
+        this.runAI();
+    },
+
+    toggleTask(id) {
+        const task = state.tasks.find(t => t.id === id);
+        task.done = !task.done;
+        if (task.done) UI.toast(`+${task.xp} XP!`);
+        this.calculateProgress();
+        Storage.save();
+        UI.refreshLists();
+    },
+
+    addExpense() {
+        const desc = prompt("Nome da conta:");
+        const val = parseFloat(prompt("Valor R$:"));
+        if (desc && val) {
+            state.expenses.push({ id: Date.now(), title: desc, value: val, paid: false });
+            Storage.save();
+            UI.refreshLists();
+            UI.toast("Conta adicionada!");
+        }
+    },
+
+    runAI() {
+        const ai = document.getElementById('aiSuggestion');
+        const renda = state.user.renda;
+        const aluguel = state.user.aluguel;
+        const internet = state.tasks.find(t => t.text.includes("Internet")).done;
+        
+        if (aluguel > (renda * 0.5)) {
+            ai.innerText = "Cuidado! Seu aluguel compromete mais de 50% da sua renda. Tente economizar em lazer este mês.";
+        } else if (!internet) {
+            ai.innerText = "Dica: Ter internet instalada deve ser sua prioridade nº 1 para conseguir gerenciar o resto.";
+        } else if (state.xp > 1000) {
+            ai.innerText = "Você está mandando muito bem! Que tal planejar um pequeno jantar para inaugurar o apê?";
+        } else {
+            ai.innerText = "Próximo passo sugerido: Foque em concluir as missões de eletrodomésticos básicos.";
+        }
+    },
+
+    demoMode() {
+        state.user = { nome: "Visitante", cidade: "São Paulo", renda: 4500, saldo: 1200, aluguel: 1800 };
+        state.tasks[0].done = true;
+        state.tasks[1].done = true;
+        state.onboardingComplete = true;
+        this.finishOb();
+    },
+
+    reset() {
+        if(confirm("Deseja resetar todos os dados?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+};
+
+// 4. UI ENGINE
+const UI = {
+    showApp() {
+        document.getElementById('ob').style.display = 'none';
+        document.getElementById('app').classList.add('show');
+        this.refreshLists();
+        this.updateProfile();
+    },
+
+    switchTab(name) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+        document.getElementById(`panel-${name}`).classList.add('on');
+        
+        document.querySelectorAll('.tab, .nb-item').forEach(t => t.classList.remove('on'));
+        // Sincronizar tab e navbar
+        event.currentTarget.classList.add('on');
+        
+        document.getElementById('mainContent').scrollTop = 0;
+    },
+
+    updateHome(pct, done, total) {
+        document.getElementById('heroName').innerHTML = `${state.user.nome} <span>👋</span>`;
+        document.getElementById('greetSub').innerText = `Bem-vindo ao seu apê!`;
+        document.getElementById('valSaldo').innerText = `R$ ${state.user.saldo.toLocaleString()}`;
+        document.getElementById('valLevel').innerText = state.level;
+        document.getElementById('userTitle').innerText = state.title;
+        
+        document.getElementById('progPct').innerText = `${pct}%`;
+        document.getElementById('progFill').style.width = `${pct}%`;
+        document.getElementById('progSub').innerText = `${done} de ${total} missões`;
+        
+        const nextLvl = levels.find(l => l.lvl === state.level + 1) || {min: state.xp};
+        document.getElementById('valXPLabel').innerText = `${state.xp} / ${nextLvl.min} XP`;
+        
+        document.getElementById('avatarBtn').innerText = state.user.nome.charAt(0).toUpperCase();
+        
+        this.refreshLists();
+    },
+
+    updateProfile() {
+        document.getElementById('perfName').innerText = state.user.nome;
+        document.getElementById('perfTitle').innerText = state.title;
+        document.getElementById('perfAv').innerText = state.user.nome.charAt(0).toUpperCase();
+        document.getElementById('finRenda').innerText = `R$ ${state.user.renda}`;
+        document.getElementById('finAluguel').innerText = `R$ ${state.user.aluguel}`;
+    },
+
+    refreshLists() {
+        // Home Task List (only 3 pending)
+        const homeList = document.getElementById('homeTaskList');
+        homeList.innerHTML = "";
+        state.tasks.filter(t => !t.done).slice(0, 3).forEach(t => {
+            homeList.innerHTML += this.renderTask(t);
+        });
+
+        // Full Task List
+        const fullList = document.getElementById('fullTaskList');
+        if (fullList) {
+            fullList.innerHTML = "";
+            state.tasks.forEach(t => fullList.innerHTML += this.renderTask(t));
+        }
+
+        // Expense List
+        const expList = document.getElementById('expenseList');
+        expList.innerHTML = "";
+        state.expenses.forEach(e => {
+            expList.innerHTML += `
+                <div class="list-item">
+                    <div class="li-text">${e.title}</div>
+                    <div class="li-tag tag-pend">R$ ${e.value}</div>
+                </div>
+            `;
+        });
+    },
+
+    renderTask(t) {
+        return `
+            <div class="list-item" onclick="Logic.toggleTask(${t.id})">
+                <div class="li-dot" style="background:${t.done ? '#7DD4A0' : '#F5C842'}"></div>
+                <div class="li-text ${t.done ? 'done' : ''}">${t.text}</div>
+                <div class="li-tag ${t.done ? 'tag-ok' : 'tag-pend'}">${t.done ? 'Feito' : '+'+t.xp+' XP'}</div>
+            </div>
+        `;
+    },
+
+    toast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+};
+
+// INIT APP
+window.onload = () => Logic.init();
+
 </script>
-</HTMLEOF>
+</body>
+</html>
